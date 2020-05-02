@@ -11,5 +11,6 @@ public class Background extends PuzzlePencilObject {
         img.setColor(getCallbacks().getDependencyInjector().getLayoutManager().bgColor);
         img.setSize(getCallbacks().getDependencyInjector().getVirtualWidth(),getCallbacks().getDependencyInjector().getVirtualHeight());
         this.addActor(img);
+        //This is a change
     }
 }

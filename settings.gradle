@@ -1,0 +1,2 @@
+include ':gameEngine'
+include 'desktop', 'android', 'ios', 'core'

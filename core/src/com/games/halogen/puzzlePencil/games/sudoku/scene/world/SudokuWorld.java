@@ -11,7 +11,8 @@ public class SudokuWorld extends GameWorld {
 
     public SudokuWorld(PuzzlePencilInjector injector){
         super(injector);
-        sudokuGrid = new SudokuGrid(injector.sudokuData.numBlocks, injector.sudokuData.level);
+
+        sudokuGrid = new SudokuGrid(getData().numBlocks, getData().level);
         this.addGameObject(new Background());
         this.addGameObject(sudokuGrid);
 
@@ -29,6 +30,11 @@ public class SudokuWorld extends GameWorld {
     }
 
     @Override
+    protected void setGameData() {
+        this.gameWorldData = new SudokuWorldData();
+    }
+
+    @Override
     protected void initWorldSpecificDependencies() {
 
     }
@@ -43,6 +49,10 @@ public class SudokuWorld extends GameWorld {
 
     SudokuLayoutManager getLayoutManager(){
         return getGameLayoutManager(SudokuLayoutManager.class);
+    }
+
+    SudokuWorldData getData(){
+        return getGameData(SudokuWorldData.class);
     }
 
     PuzzlePencilInjector getDependencyInjector(){

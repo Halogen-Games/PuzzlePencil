@@ -1,10 +1,8 @@
 package com.games.halogen.puzzlePencil.infra;
 
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
-import com.games.halogen.puzzlePencil.games.sudoku.infra.SudokuData;
 
 public class PuzzlePencilInjector extends GameDependencyInjector {
-    public SudokuData sudokuData;
 
     public PuzzlePencilInjector(float width, float height) {
         super(width, height);
@@ -12,7 +10,7 @@ public class PuzzlePencilInjector extends GameDependencyInjector {
 
     @Override
     public void initDependencies() {
-        this.sudokuData = new SudokuData();
+
     }
 
     @Override

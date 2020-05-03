@@ -22,9 +22,10 @@ public class Cell extends SudokuObject {
         PuzzlePencilInjector di = getCallbacks().getDependencyInjector();
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
 
-        float cellSize = (lm.gridSize / getCallbacks().getNumRows()) * (1 - lm.cellMarginToSizeRatio);
+        int numRows = getCallbacks().getData().numBlocks * getCallbacks().getData().numBlocks;
+        float cellSize = (lm.gridSize / numRows) * (1 - lm.cellMarginToSizeRatio);
         lm.cellSize = cellSize;
-        float cellMargin = (lm.gridSize / getCallbacks().getNumRows()) * lm.cellMarginToSizeRatio / 2;
+        float cellMargin = (lm.gridSize / numRows) * lm.cellMarginToSizeRatio / 2;
 
         this.setSize(cellSize + 2*cellMargin, cellSize + 2*cellMargin);
         this.setPosition(this.coordinates.getFirst()*getWidth(), this.coordinates.getSecond()*getHeight());

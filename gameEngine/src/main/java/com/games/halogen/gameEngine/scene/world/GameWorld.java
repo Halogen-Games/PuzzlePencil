@@ -15,11 +15,13 @@ public abstract class GameWorld extends Stage {
 
     protected GameWorldCallbacks callbacks;
     protected GameLayoutManager layoutManager;
+    protected GameWorldData gameWorldData;
 
 
     public GameWorld(GameDependencyInjector injector){
         super(injector.getViewport(), injector.getRenderer().batch);
         this.injector = injector;
+        setGameData();
         setLayoutManager();
         setWorldCallbacks();
         initWorldSpecificDependencies();
@@ -28,6 +30,7 @@ public abstract class GameWorld extends Stage {
     protected abstract void initWorldSpecificDependencies();
     protected abstract void setWorldCallbacks();
     protected abstract void setLayoutManager();
+    protected abstract void setGameData();
 
     protected final void addGameObject(GameObject obj){
         if(obj != null) {
@@ -50,6 +53,10 @@ public abstract class GameWorld extends Stage {
 
     protected <T extends GameLayoutManager> T getGameLayoutManager(Class<T> type){
         return type.cast(layoutManager);
+    }
+
+    protected <T extends GameWorldData> T getGameData(Class<T> type){
+        return type.cast(gameWorldData);
     }
 
     public Array<GameObject> getGameObjects(){

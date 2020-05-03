@@ -29,7 +29,7 @@ class SudokuLines extends SudokuObject {
         this.addActor(topLine);
 
         //internal vertical lines
-        int numBlocks = getCallbacks().getDependencyInjector().sudokuData.numBlocks;
+        int numBlocks = getCallbacks().getData().numBlocks;
         for(int i=1;i<numBlocks;i++){
             Image line = getLineImage();
             line.moveBy(i*lm.gridSize/numBlocks, 0);

@@ -1,8 +1,6 @@
 package com.games.halogen.puzzlePencil.scene.world;
 
-import com.badlogic.gdx.Screen;
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
-import com.games.halogen.gameEngine.infra.SwitchScreenCallback;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 
@@ -25,6 +23,11 @@ public class PuzzlePencilWorld extends GameWorld {
     @Override
     protected void setLayoutManager() {
         this.layoutManager = new PuzzlePencilLayoutManager();
+    }
+
+    @Override
+    protected void setGameData() {
+        this.gameWorldData = new PuzzlePencilWorldData();
     }
 
     public PuzzlePencilWorldCallbacks getWorldCallbacks(){

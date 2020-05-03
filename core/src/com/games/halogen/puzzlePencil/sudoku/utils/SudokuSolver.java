@@ -1,84 +1,85 @@
 package com.games.halogen.puzzlePencil.sudoku.utils;
 
-import com.badlogic.gdx.math.Vector2;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.cell.Cell;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.cell.Miniums;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.cell.Cell;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
-import java.util.ArrayList;
+/**
+ * -----Scanning Techniques-----
+ * level 1 - Naked Singles
+ * level 2 - Hidden Singles
+ *
+ * -----Pair Removal Techniques-----
+ * level 3 -  Naked Pairs'
+ * level 4 - Hidden Pairs
+ * Note: Can generalize to triples and quads (uninteresting?)
+ *
+ * -----lower level of X-Wing Techniques (chains of singles)------
+ *  Example(2-chain): same digit twice only in Same unit, can remove this Digit from their other common units.
+ *  3-chain??
+ *
+ * -----X-Wing Like techniques (4 length chains of pairs)-----
+ * General Technique :
+ *      2 Singles in same unit(A), both pair up with another set of singles in units B and C.
+ *      can remove all others of this single from A, B and C
+ *      This is kind of a chaining with a chain of 4 cells. Cell 1 and 4 lie in A, Cell 2 in B and Cell 3 lies in C.
+ * level 5 - A is a row or column, B and C are both either row or column
+ * level 6 - A is a Block, B and C are same unit type
+ * level 7 - A is any unit, B and C are diff Units types
+ *
+ * -----Longer chains than X-Wing ( 6 length chains)-----
+ */
+class SudokuSolver {
+    //prevent object instantiation
+    private SudokuSolver(){}
 
-public class SudokuSolver {
-    public void solveGridCell(ArrayList<ArrayList<Cell>> cells, Cell cell) {
-        Miniums miniums = getMiniums(cells, cell);
+    /*
+    Solves the grid up to a certain point only
+     */
+    static void solveGridCell(SudokuGrid grid, Cell cell) {
+        boolean fillPossible = true;
 
-        //naked single check
-        if (miniums.size() == 1) {
-            cell.setEmpty();
-            cell.setValue(miniums.get(0));
+        while(cell.isEmpty() && fillPossible) {
+            fillPossible = false;
+            cell.setMiniums(SudokuUtils.getMiniums(grid, cell));
+
+            //Level 1 - Naked Singles
+            if (fillAllNakedSingles(grid)) {
+                fillPossible = true;
+                continue;
+            }
+
+            if (grid.getLevel() == 1) {
+                continue;
+            }
+
+            //Level 2 - Hidden Singles
+            if (removeHiddenSingles(grid)) {
+                fillPossible = true;
+                continue;
+            }
+
+            if (grid.getLevel() == 2) {
+                continue;
+            }
+
+            if(processMaxDifficultyRule(grid)){
+                fillPossible = true;
+            }
         }
     }
 
-    private Miniums getMiniums(ArrayList<ArrayList<Cell>> cells, Cell cell) {
-        int gridSize = cells.size();
-        int blockSize = (int) Math.sqrt(gridSize);
-
-        Miniums miniums = new Miniums();
-        miniums.fillAll(gridSize);
-
-        //check row
-        for (Cell c:getRowCells(cells, cell)) {
-            if (!c.isEmpty()) {
-                miniums.remove((Integer) c.getValue());
-            }
-        }
-
-        //check col
-        for (Cell c:getColumnCells(cells, cell)) {
-            if (!c.isEmpty()) {
-                miniums.remove((Integer) c.getValue());
-            }
-        }
-
-        //check block
-        for (Cell c:getBlockCells(cells, cell)) {
-            if (!c.isEmpty()) {
-                miniums.remove((Integer) c.getValue());
-            }
-        }
-
-        return miniums;
+    /*If a cell has only one possible candidate, fill it*/
+    private static boolean fillAllNakedSingles(SudokuGrid grid){
+        return false;
     }
 
-    private ArrayList<Cell> getRowCells(ArrayList<ArrayList<Cell>> cells, Cell cell){
-        ArrayList<Cell> rv = new ArrayList<>();
-        for (int j = 0; j < cells.size(); j++) {
-            rv.add(cells.get((int) cell.getCoordinates().x).get(j));
-        }
-
-        return rv;
+    /*Converts all hidden singles to naked singles*/
+    private static boolean removeHiddenSingles(SudokuGrid grid) {
+        return false;
     }
 
-    private ArrayList<Cell> getColumnCells(ArrayList<ArrayList<Cell>> cells, Cell cell){
-        ArrayList<Cell> rv = new ArrayList<>();
-        for (int i = 0; i < cells.size(); i++) {
-            rv.add(cells.get(i).get((int) cell.getCoordinates().y));
-        }
-
-        return rv;
-    }
-
-    private ArrayList<Cell> getBlockCells(ArrayList<ArrayList<Cell>> cells, Cell cell){
-        ArrayList<Cell> rv = new ArrayList<>();
-
-        int gridSize = cells.size();
-        int blockSize = (int) Math.sqrt(gridSize);
-
-        Vector2 cellBlockInd = new Vector2((int) (cell.getCoordinates().x / blockSize), (int) (cell.getCoordinates().y / blockSize));
-        for (int i = 0; i < blockSize; i++) {
-            for (int j = 0; j < blockSize; j++) {
-                rv.add(cells.get(i + (int) (cellBlockInd.x * blockSize)).get(j + (int) (cellBlockInd.y * blockSize)));
-            }
-        }
-
-        return rv;
+    /*Processes max difficulty, will be removed once all checks are added*/
+    private static boolean processMaxDifficultyRule(SudokuGrid grid) {
+        return false;
     }
 }

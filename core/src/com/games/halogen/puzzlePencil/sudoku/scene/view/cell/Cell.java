@@ -1,19 +1,20 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.cell;
+package com.games.halogen.puzzlePencil.sudoku.scene.view.cell;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
+import com.games.halogen.gameEngine.utils.Pair;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.PuzzlePencilObject;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.PuzzlePencilObject;
 
 public class Cell extends PuzzlePencilObject {
     private Label valueLabel;
-    private Vector2 coordinates;
+    private Pair.IntPair coordinates;
+    private Miniums miniums;
 
     public Cell(int r, int c){
-        this.coordinates = new Vector2(r,c);
+        this.coordinates = new Pair.IntPair(r,c);
     }
 
     @Override
@@ -26,7 +27,7 @@ public class Cell extends PuzzlePencilObject {
         float cellMargin = (lm.gridSize / getCallbacks().getNumRows()) * lm.cellMarginToSizeRatio / 2;
 
         this.setSize(cellSize + 2*cellMargin, cellSize + 2*cellMargin);
-        this.setPosition(this.coordinates.x*getWidth(), this.coordinates.y*getHeight());
+        this.setPosition(this.coordinates.getFirst()*getWidth(), this.coordinates.getSecond()*getHeight());
 
         Image img = new Image(di.getAssetManager().getSquareRegion());
         img.setSize(cellSize, cellSize);
@@ -43,12 +44,13 @@ public class Cell extends PuzzlePencilObject {
         this.addActor(valueLabel);
     }
 
-    public void setValue(int val) {
-        valueLabel.setText(val);
+    @Override
+    public void modelUpdated() {
+        //todo: fill
     }
 
-    public void setEmpty() {
-        valueLabel.setText("");
+    public void setValue(int val) {
+        valueLabel.setText(val);
     }
 
     public int getValue() {
@@ -58,11 +60,23 @@ public class Cell extends PuzzlePencilObject {
         return Integer.parseInt(valueLabel.getText().toString());
     }
 
+    public void setEmpty() {
+        valueLabel.setText("");
+    }
+
     public boolean isEmpty(){
         return valueLabel.getText().toString().equals("");
     }
 
-    public Vector2 getCoordinates(){
+    public void setMiniums(Miniums miniums) {
+        this.miniums = miniums;
+    }
+
+    public Miniums getMiniums(){
+        return this.miniums;
+    }
+
+    public Pair.IntPair getCoordinates(){
         return coordinates;
     }
 }

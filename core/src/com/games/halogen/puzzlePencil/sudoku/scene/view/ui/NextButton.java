@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.ui;
+package com.games.halogen.puzzlePencil.sudoku.scene.view.ui;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.games.halogen.gameEngine.ui.GameTextButton;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.PuzzlePencilObject;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.PuzzlePencilObject;
 
 public class NextButton extends PuzzlePencilObject {
     private GameTextButton textButton;
@@ -28,6 +28,11 @@ public class NextButton extends PuzzlePencilObject {
         this.addChildObject(textButton);
 
         addUIListener();
+    }
+
+    @Override
+    public void modelUpdated() {
+        //todo: fill
     }
 
     private void addUIListener(){

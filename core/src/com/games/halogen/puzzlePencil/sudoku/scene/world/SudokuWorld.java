@@ -2,16 +2,16 @@ package com.games.halogen.puzzlePencil.sudoku.scene.world;
 
 import com.games.halogen.gameEngine.scene.world.GameWorld;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.grid.SudokuGrid;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.ui.Background;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.ui.NextButton;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.Background;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.NextButton;
 
 public class SudokuWorld extends GameWorld {
     private SudokuGrid sudokuGrid;
 
     public SudokuWorld(PuzzlePencilInjector injector){
         super(injector);
-        sudokuGrid = new SudokuGrid(injector.sudokuData.numBlocks);
+        sudokuGrid = new SudokuGrid(injector.sudokuData.numBlocks, injector.sudokuData.level);
         this.addGameObject(new Background());
         this.addGameObject(sudokuGrid);
 
@@ -32,6 +32,6 @@ public class SudokuWorld extends GameWorld {
     }
 
     public void createNewGrid() {
-        sudokuGrid.recreate();
+        sudokuGrid.recreateGrid();
     }
 }

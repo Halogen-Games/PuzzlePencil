@@ -1,19 +1,22 @@
 package com.games.halogen.puzzlePencil;
 
 import com.games.halogen.gameEngine.HalogenGame;
-import com.games.halogen.puzzlePencil.sudoku.SudokuScreen;
-import com.games.halogen.puzzlePencil.infra.GameData;
+import com.games.halogen.puzzlePencil.games.sudoku.scene.SudokuScreen;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
+import com.games.halogen.puzzlePencil.scene.PuzzlePencilScreen;
 
 public class PuzzlePencil extends HalogenGame {
+	public static final int VIRTUAL_WIDTH = 360;
+	public static final int VIRTUAL_HEIGHT = 640;
+
 	@Override
 	protected void init() {
-		setScreen(new SudokuScreen(getDependencyInjector()));
+		setScreen(new SudokuScreen(getDependencyInjector(), null));
 	}
 
 	@Override
 	protected void setDependencyInjector() {
-		this.di = new PuzzlePencilInjector(GameData.VIRTUAL_WIDTH, GameData.VIRTUAL_HEIGHT);
+		this.di = new PuzzlePencilInjector(VIRTUAL_WIDTH, VIRTUAL_HEIGHT);
 	}
 
 	private PuzzlePencilInjector getDependencyInjector(){

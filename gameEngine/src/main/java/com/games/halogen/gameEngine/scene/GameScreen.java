@@ -5,23 +5,29 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
+import com.games.halogen.gameEngine.infra.SwitchScreenCallback;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
 import com.games.halogen.gameEngine.scene.view.GameObject;
 
 import java.util.Locale;
 
 public abstract class GameScreen implements Screen {
-    private Color clearColor;
     private final GameDependencyInjector injector;
+
+    private Color clearColor;
     private GameWorld gameWorld;
 
-    public GameScreen(GameDependencyInjector injector){
+    private SwitchScreenCallback switchScreenCallback;
+
+    public GameScreen(GameDependencyInjector injector, SwitchScreenCallback switchScreenCallback){
         this.injector = injector;
+        this.switchScreenCallback = switchScreenCallback;
         this.setClearColor(1,1,1,1);
     }
 
     protected void setGameWorld(GameWorld gameWorld){
         this.gameWorld = gameWorld;
+        this.gameWorld.setSwitchScreenCallback(switchScreenCallback);
         Gdx.input.setInputProcessor(gameWorld);
     }
 
@@ -55,9 +61,9 @@ public abstract class GameScreen implements Screen {
         injector.getViewport().update(width, height, true);
         injector.getCamera().update();
 
-        injector.resize();
-
         injector.getRenderer().batch.setProjectionMatrix(injector.getCamera().combined);
+
+        gameWorld.resize();
 
         for(GameObject obj: gameWorld.getGameObjects()){
             obj.invalidate();

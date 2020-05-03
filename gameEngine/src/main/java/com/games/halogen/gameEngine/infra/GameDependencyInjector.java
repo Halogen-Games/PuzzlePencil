@@ -17,11 +17,9 @@ public abstract class GameDependencyInjector {
     private OrthographicCamera cam;
 
     //Renderer
+    private AssetManager libGDXAssetManager;
     private ObjectRenderer renderer;
     protected GameAssetManager gameAssetManager;
-
-    //Layout
-    protected GameLayoutManager gameLayoutManager;
 
     public GameDependencyInjector(float virtualWidth, float virtualHeight){
         this.virtualWidth = virtualWidth;
@@ -40,25 +38,17 @@ public abstract class GameDependencyInjector {
         renderer = new ObjectRenderer(this);
         renderer.init();
 
-        AssetManager manager = new AssetManager();
+        libGDXAssetManager = new AssetManager();
         setAssetManager();
-        gameAssetManager.beginLoading(manager);
-        initDependencies();
+        gameAssetManager.beginLoading(libGDXAssetManager);
 
-        //Layout
-        setLayoutManager();
+        initDependencies();
     }
 
     public abstract void setAssetManager();
 
     protected <T extends GameAssetManager> T getGameAssetManager(Class<T> type){
         return type.cast(gameAssetManager);
-    }
-
-    public abstract void setLayoutManager();
-
-    protected <T extends GameLayoutManager> T getGameLayoutManager(Class<T> type){
-        return type.cast(gameLayoutManager);
     }
 
     public abstract void initDependencies();
@@ -88,7 +78,7 @@ public abstract class GameDependencyInjector {
         return virtualHeight;
     }
 
-    public void resize(){
-        gameLayoutManager.updateLayout(this);
+    public AssetManager getLibGDXAssetManager(){
+        return libGDXAssetManager;
     }
 }

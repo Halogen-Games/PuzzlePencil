@@ -8,20 +8,12 @@ import com.games.halogen.gameEngine.scene.world.GameWorldCallbacks;
 public abstract class GameObject extends WidgetGroup {
     public abstract void init();
 
-    protected <T extends GameWorldCallbacks> T getGameWorldCallbacks(Class<T> type){
-        if(getWorld() == null){
-            Gdx.app.log(this.getClass().getSimpleName(), "Failed to get world callbacks, object not added to world");
+    protected <T extends GameWorld> T getGameWorld(Class<T> type){
+        if(this.getStage() == null){
+            Gdx.app.log(this.getClass().getSimpleName(), "Failed to get world, object not added to any world");
             return null;
         }
-
-        return getWorld().getGameWorldCallbacks(type);
-    }
-
-    private GameWorld getWorld(){
-        if(super.getStage() == null){
-            return null;
-        }
-        return (GameWorld)super.getStage();
+        return type.cast(this.getStage());
     }
 
     protected void addChildObject(GameObject obj){

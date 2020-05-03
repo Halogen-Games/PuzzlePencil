@@ -1,12 +1,9 @@
 package com.games.halogen.gameEngine.ui;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Scaling;
-import com.games.halogen.gameEngine.scene.world.gameObjects.GameObject;
-
-import java.util.Locale;
+import com.games.halogen.gameEngine.scene.view.GameObject;
 
 public class GameTextButton extends GameObject {
     private final TextButton button;
@@ -33,6 +30,11 @@ public class GameTextButton extends GameObject {
 
     @Override
     public void init() {
+    }
+
+    @Override
+    public void modelUpdated() {
+        //todo: fill
     }
 
     public TextButton.TextButtonStyle getStyle(){

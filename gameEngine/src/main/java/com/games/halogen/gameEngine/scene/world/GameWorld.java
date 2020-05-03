@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.Array;
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
-import com.games.halogen.gameEngine.scene.world.gameObjects.GameObject;
+import com.games.halogen.gameEngine.scene.view.GameObject;
 
 public abstract class GameWorld extends Stage {
     protected GameWorldCallbacks callbacks;

@@ -1,4 +1,4 @@
-package com.games.halogen.gameEngine.scene.world.gameObjects;
+package com.games.halogen.gameEngine.scene.view;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
@@ -31,4 +31,6 @@ public abstract class GameObject extends WidgetGroup {
             obj.init();
         }
     }
+
+    public abstract void modelUpdated();
 }

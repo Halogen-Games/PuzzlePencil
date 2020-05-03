@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.grid;
+package com.games.halogen.puzzlePencil.sudoku.scene.view.grid;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.scene.gameObjects.PuzzlePencilObject;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.PuzzlePencilObject;
 
 class SudokuLines extends PuzzlePencilObject {
     private PuzzlePencilLayoutManager lm;
@@ -42,6 +42,11 @@ class SudokuLines extends PuzzlePencilObject {
             line.moveBy(0,i*lm.gridSize/numBlocks);
             this.addActor(line);
         }
+    }
+
+    @Override
+    public void modelUpdated() {
+        //todo: fill
     }
 
     private Image getLineImage(){

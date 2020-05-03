@@ -4,11 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
-import com.games.halogen.gameEngine.scene.world.gameObjects.GameObject;
+import com.games.halogen.gameEngine.scene.view.GameObject;
 
 import java.util.Locale;
 

@@ -139,4 +139,12 @@ public class SudokuGrid extends SudokuObject {
         activeCell.setActive(false);
         activeCell = null;
     }
+
+    public void fillInActiveCell(int num) {
+        if(activeCell == null){
+            return;
+        }
+
+        activeCell.setValue(num);
+    }
 }

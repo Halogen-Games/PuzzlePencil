@@ -37,4 +37,8 @@ public class SudokuWorldCallbacks extends GameWorldCallbacks {
     public void setActiveCell(Cell c) {
         getWorld().setActiveCell(c);
     }
+
+    public void fillNumInActiveCell(int num) {
+        getWorld().fillInActiveCell(num);
+    }
 }

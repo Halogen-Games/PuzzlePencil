@@ -24,5 +24,7 @@ public abstract class GameObject extends WidgetGroup {
         }
     }
 
-    public abstract void modelUpdated();
+    public void modelUpdated(){
+
+    }
 }

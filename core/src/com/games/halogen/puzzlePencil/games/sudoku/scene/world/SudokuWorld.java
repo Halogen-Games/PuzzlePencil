@@ -2,6 +2,7 @@ package com.games.halogen.puzzlePencil.games.sudoku.scene.world;
 
 import com.games.halogen.gameEngine.scene.world.GameWorld;
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Cell;
+import com.games.halogen.puzzlePencil.games.sudoku.scene.view.ui.keypad.KeyPad;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuGrid;
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.ui.Background;
@@ -17,7 +18,9 @@ public class SudokuWorld extends GameWorld {
         this.addGameObject(new Background());
         this.addGameObject(sudokuGrid);
 
-        this.addGameObject(new NextButton());
+        this.addGameObject(new NextButton("Next Puzzle"));
+
+        this.addGameObject(new KeyPad());
     }
 
     @Override
@@ -70,5 +73,9 @@ public class SudokuWorld extends GameWorld {
 
     void resetActiveCell() {
         sudokuGrid.resetActiveCell();
+    }
+
+    void fillInActiveCell(int num) {
+        sudokuGrid.fillInActiveCell(num);
     }
 }

@@ -64,16 +64,18 @@ public class SudokuGenerator {
     }
 
     //todo: give better name
-    private static void removeNumberInCell(SudokuGrid cells, Cell cell) {
+    private static void removeNumberInCell(SudokuGrid grid, Cell cell) {
         int val = cell.getValue();
+
+        grid.saveState();
         cell.setEmpty();
+        SudokuSolver.solveGridCell(grid, cell);
 
-        SudokuSolver.solveGridCell(cells, cell);
+        int newVal = cell.getValue();
 
-        if(cell.getValue() == val){
+        grid.loadState();
+        if(newVal == val){
             cell.setEmpty();
-        }else{
-            cell.setValue(val);
         }
     }
 }

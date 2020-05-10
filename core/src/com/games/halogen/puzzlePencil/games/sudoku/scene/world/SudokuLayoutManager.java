@@ -21,11 +21,12 @@ public class SudokuLayoutManager extends GameLayoutManager {
     public float nextButtTextHeightRatio = 0.75f;
 
     //colors
-    public Color bgColor = new Color().set(0xcffee2ff);
-    public Color gridLineColor = new Color().set(0x343e3dff);
-    public Color cellColor = new Color().set(0x607466ff);
-    public Color fontColor = bgColor;
-    public Color buttonBGColor = gridLineColor;
+    public Color bgColor = new Color().set(0xffffffff);
+    public Color gridLineColor = new Color().set(0x555555ff);
+    public Color deselectedCellColor = new Color().set(0xccccccff);
+    public Color fontColor = new Color().set(0x000000ff);;
+    public Color buttonBGColor = new Color().set(0x999999ff);;
+    public Color selectedCellColor = new Color().set(0x999999ff);;
 
     public float getGridLineThickness(){
         return cellSize * cellMarginToSizeRatio * 2f;

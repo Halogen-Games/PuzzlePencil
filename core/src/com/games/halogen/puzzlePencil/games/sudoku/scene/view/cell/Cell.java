@@ -1,5 +1,7 @@
 package com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell;
 
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
@@ -12,6 +14,10 @@ public class Cell extends SudokuObject {
     private Label valueLabel;
     private Pair.IntPair coordinates;
     private Miniums miniums;
+
+    private boolean isSelected;
+
+    private Image bgImg;
 
     public Cell(int r, int c){
         this.coordinates = new Pair.IntPair(r,c);
@@ -30,19 +36,44 @@ public class Cell extends SudokuObject {
         this.setSize(cellSize + 2*cellMargin, cellSize + 2*cellMargin);
         this.setPosition(this.coordinates.getFirst()*getWidth(), this.coordinates.getSecond()*getHeight());
 
-        Image img = new Image(di.getAssetManager().getSquareRegion());
-        img.setSize(cellSize, cellSize);
-        img.setPosition(cellMargin, cellMargin);
-        img.setColor(lm.cellColor);
-        this.addActor(img);
+        bgImg = new Image(di.getAssetManager().getSquareRegion());
+        bgImg.setSize(cellSize, cellSize);
+        bgImg.setPosition(cellMargin, cellMargin);
+        bgImg.setColor(lm.deselectedCellColor);
+        this.addActor(bgImg);
 
         valueLabel = new Label("", di.getAssetManager().fontLabelStyle);
         valueLabel.setColor(lm.fontColor);
         valueLabel.setAlignment(Align.center);
-        valueLabel.setSize(img.getWidth(), img.getHeight());
+        valueLabel.setSize(bgImg.getWidth(), bgImg.getHeight());
         float fontScale = cellSize * lm.cellTextRatio / valueLabel.getPrefHeight();
         valueLabel.setFontScale(fontScale);
         this.addActor(valueLabel);
+
+        isSelected  = false;
+        addUIListeners();
+    }
+
+    private void addUIListeners() {
+        final Cell thisCell = this;
+        this.addListener(new InputListener(){
+            @Override
+            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
+                getCallbacks().resetActiveCell();
+                setActive(true);
+                getCallbacks().setActiveCell(thisCell);
+                return super.touchDown(event, x, y, pointer, button);
+            }
+        });
+    }
+
+    public void setActive(boolean isSelected) {
+        this.isSelected = isSelected;
+        if(this.isSelected){
+            bgImg.setColor(getCallbacks().getLayoutManager().selectedCellColor);
+        }else{
+            bgImg.setColor(getCallbacks().getLayoutManager().deselectedCellColor);
+        }
     }
 
     @Override
@@ -51,7 +82,11 @@ public class Cell extends SudokuObject {
     }
 
     public void setValue(int val) {
-        valueLabel.setText(val);
+        if(val == -1){
+            setEmpty();
+        }else {
+            valueLabel.setText(val);
+        }
     }
 
     public int getValue() {

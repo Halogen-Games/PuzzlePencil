@@ -1,6 +1,7 @@
 package com.games.halogen.puzzlePencil.games.sudoku.scene.world;
 
 import com.games.halogen.gameEngine.scene.world.GameWorld;
+import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Cell;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuGrid;
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.ui.Background;
@@ -61,5 +62,13 @@ public class SudokuWorld extends GameWorld {
 
     public SudokuWorldCallbacks getCallbacks() {
         return getGameWorldCallbacks(SudokuWorldCallbacks.class);
+    }
+
+    void setActiveCell(Cell c) {
+        sudokuGrid.setActiveCell(c);
+    }
+
+    void resetActiveCell() {
+        sudokuGrid.resetActiveCell();
     }
 }

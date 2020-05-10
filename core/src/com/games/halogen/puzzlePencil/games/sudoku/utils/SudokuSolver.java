@@ -1,6 +1,7 @@
 package com.games.halogen.puzzlePencil.games.sudoku.utils;
 
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Cell;
+import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Miniums;
 import com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuGrid;
 
 /**
@@ -13,9 +14,8 @@ import com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuGrid;
  * level 4 - Hidden Pairs
  * Note: Can generalize to triples and quads (uninteresting?)
  *
- * -----lower level of X-Wing Techniques (chains of singles)------
+ * -----lower level of X-Wing Techniques (2 length chain of singles)------
  *  Example(2-chain): same digit twice only in Same unit, can remove this Digit from their other common units.
- *  3-chain??
  *
  * -----X-Wing Like techniques (4 length chains of pairs)-----
  * General Technique :
@@ -40,7 +40,7 @@ class SudokuSolver {
 
         while(cell.isEmpty() && fillPossible) {
             fillPossible = false;
-            cell.setMiniums(SudokuUtils.getMiniums(grid, cell));
+            SudokuUtils.findMiniums(grid);
 
             //Level 1 - Naked Singles
             if (fillAllNakedSingles(grid)) {
@@ -70,6 +70,14 @@ class SudokuSolver {
 
     /*If a cell has only one possible candidate, fill it*/
     private static boolean fillAllNakedSingles(SudokuGrid grid){
+        for(int i=0; i<grid.getNumRows(); i++){
+            for(int j=0; j<grid.getNumRows(); j++){
+                Miniums miniums = grid.getCell(i,j).getMiniums();
+                if(miniums.size() == 1){
+                    grid.setValue(i,j,miniums.get(0));
+                }
+            }
+        }
         return false;
     }
 

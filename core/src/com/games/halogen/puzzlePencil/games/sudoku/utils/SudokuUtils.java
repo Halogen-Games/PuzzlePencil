@@ -31,9 +31,20 @@ class SudokuUtils {
     }
 
     /*
+    Finds miniums for all cells
+     */
+    static void findMiniums(SudokuGrid grid) {
+        for(int i=0; i<grid.getNumRows(); i++){
+            for(int j=0; j<grid.getNumRows(); j++){
+                findMiniumsForCells(grid, grid.getCell(i,j));
+            }
+        }
+    }
+
+    /*
     Returns the miniums of current cell according to given grid
     */
-    static Miniums getMiniums(SudokuGrid grid, Cell cell) {
+    static void findMiniumsForCells(SudokuGrid grid, Cell cell) {
         Miniums miniums = new Miniums().fillAll(grid.getNumRows());
 
         //check all the three units one by one
@@ -45,7 +56,7 @@ class SudokuUtils {
             }
         }
 
-        return miniums;
+        cell.setMiniums(miniums);
     }
 
     /*

@@ -39,8 +39,8 @@ public class SudokuWorld extends GameWorld {
         Viewport vp = getCallbacks().getDependencyInjector().getViewport();
         PuzzlePencilInjector di = getCallbacks().getDependencyInjector();
 
-        bg.setSize(di.getVirtualWidth(), di.getVirtualHeight());
-        bg.setPosition((vp.getWorldWidth() - getCallbacks().getDependencyInjector().getVirtualWidth())/2, 0);
+        bg.setSize(vp.getWorldWidth(), vp.getWorldHeight());
+        bg.setPosition(0, 0);
 
         //fixme: setting grid size has no effect on children sizes
         sudokuGrid.setSize(lm.gridSize, lm.gridSize);

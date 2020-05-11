@@ -1,26 +1,27 @@
-package com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell;
+package com.games.halogen.puzzlePencil.sudoku.scene.view.grid;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.utils.Align;
-import com.games.halogen.gameEngine.utils.Pair;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.SudokuObject;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.world.SudokuLayoutManager;
+import com.games.halogen.gameEngine.utils.Pair.IntPair;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.general.TextLabel;
+import com.games.halogen.puzzlePencil.sudoku.scene.world.SudokuLayoutManager;
 
 public class Cell extends SudokuObject {
-    private Label valueLabel;
-    private Pair.IntPair coordinates;
+    private IntPair coordinates;
+    private TextLabel valueLabel;
     private Miniums miniums;
 
     private boolean isSelected;
+    private boolean isEditable;
 
     private Image bgImg;
 
-    public Cell(int r, int c){
-        this.coordinates = new Pair.IntPair(r,c);
+    Cell(int r, int c){
+        this.coordinates = new IntPair(r,c);
     }
 
     @Override
@@ -28,26 +29,29 @@ public class Cell extends SudokuObject {
         PuzzlePencilInjector di = getCallbacks().getDependencyInjector();
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
 
-        int numRows = getCallbacks().getData().numBlocks * getCallbacks().getData().numBlocks;
-        float cellSize = (lm.gridSize / numRows) * (1 - lm.cellMarginToSizeRatio);
-        lm.cellSize = cellSize;
-        float cellMargin = (lm.gridSize / numRows) * lm.cellMarginToSizeRatio / 2;
-
-        this.setSize(cellSize + 2*cellMargin, cellSize + 2*cellMargin);
+        this.setSize(lm.cellSize + 2*lm.cellMargin, lm.cellSize + 2*lm.cellMargin);
         this.setPosition(this.coordinates.getFirst()*getWidth(), this.coordinates.getSecond()*getHeight());
 
+        //set bg
         bgImg = new Image(di.getAssetManager().getSquareRegion());
-        bgImg.setSize(cellSize, cellSize);
-        bgImg.setPosition(cellMargin, cellMargin);
+        bgImg.setSize(lm.cellSize, lm.cellSize);
+        bgImg.setPosition(lm.cellMargin, lm.cellMargin);
         bgImg.setColor(lm.deselectedCellColor);
         this.addActor(bgImg);
 
-        valueLabel = new Label("", di.getAssetManager().fontLabelStyle);
+        //miniums
+        this.miniums = new Miniums();
+        miniums.setSize(lm.cellSize*lm.miniumsBlockRatio, lm.cellSize*lm.miniumsBlockRatio);
+        miniums.setPosition((getWidth() - miniums.getWidth())/2, (getHeight() - miniums.getHeight())/2);
+        addChildObject(this.miniums, false);
+
+        //set text label
+        valueLabel = new TextLabel("", di.getAssetManager().fontLabelStyle);
         valueLabel.setColor(lm.fontColor);
         valueLabel.setAlignment(Align.center);
         valueLabel.setSize(bgImg.getWidth(), bgImg.getHeight());
-        float fontScale = cellSize * lm.cellTextRatio / valueLabel.getPrefHeight();
-        valueLabel.setFontScale(fontScale);
+
+        valueLabel.setTextHeight(lm.cellSize * lm.cellTextRatio);
         this.addActor(valueLabel);
 
         isSelected  = false;
@@ -67,7 +71,7 @@ public class Cell extends SudokuObject {
         });
     }
 
-    public void setActive(boolean isSelected) {
+    void setActive(boolean isSelected) {
         this.isSelected = isSelected;
         if(this.isSelected){
             bgImg.setColor(getCallbacks().getLayoutManager().selectedCellColor);
@@ -81,38 +85,57 @@ public class Cell extends SudokuObject {
         //todo: fill
     }
 
-    public void setValue(int val) {
+    void setValue(int val) {
         if(val == -1){
             setEmpty();
         }else {
             valueLabel.setText(val);
+            miniums.setVisible(false);
         }
     }
 
     public int getValue() {
-        if(valueLabel.getText().toString().equals("")){
+        if(valueLabel.getText().equals("")){
             return -1;
         }
-        return Integer.parseInt(valueLabel.getText().toString());
+        return Integer.parseInt(valueLabel.getText());
     }
 
     public void setEmpty() {
         valueLabel.setText("");
+        miniums.setVisible(true);
     }
 
     public boolean isEmpty(){
-        return valueLabel.getText().toString().equals("");
+        return valueLabel.getText().equals("");
     }
 
     public void setMiniums(Miniums miniums) {
-        this.miniums = miniums;
+        this.miniums.set(miniums);
     }
 
     public Miniums getMiniums(){
         return this.miniums;
     }
 
-    public Pair.IntPair getCoordinates(){
+    public IntPair getCoordinates(){
         return coordinates;
+    }
+
+    void setEditable(boolean editable){
+        this.isEditable = editable;
+        if(editable){
+            valueLabel.setColor(getCallbacks().getLayoutManager().editableFontColor);
+        }else {
+            valueLabel.setColor(getCallbacks().getLayoutManager().fontColor);
+        }
+    }
+
+    boolean isEditable() {
+        return isEditable;
+    }
+
+    void toggleMinium(int num) {
+        miniums.toggleNum(num);
     }
 }

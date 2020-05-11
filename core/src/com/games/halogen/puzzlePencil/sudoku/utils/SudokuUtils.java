@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.games.sudoku.utils;
+package com.games.halogen.puzzlePencil.sudoku.utils;
 
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Cell;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Miniums;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Miniums;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -44,14 +44,15 @@ class SudokuUtils {
     /*
     Returns the miniums of current cell according to given grid
     */
-    static void findMiniumsForCells(SudokuGrid grid, Cell cell) {
-        Miniums miniums = new Miniums().fillAll(grid.getNumRows());
+    private static void findMiniumsForCells(SudokuGrid grid, Cell cell) {
+        Miniums miniums = cell.getMiniums();
+        miniums.fillAll(grid.getNumRows());
 
         //check all the three units one by one
         for(UnitType u:UnitType.values()){
             for (Cell c:getUnitCells(grid, cell, u)) {
                 if (!c.isEmpty()) {
-                    miniums.remove((Integer) c.getValue());
+                    miniums.remove(c.getValue());
                 }
             }
         }

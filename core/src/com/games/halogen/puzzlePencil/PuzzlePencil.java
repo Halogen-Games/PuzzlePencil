@@ -1,9 +1,8 @@
 package com.games.halogen.puzzlePencil;
 
 import com.games.halogen.gameEngine.HalogenGame;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.SudokuScreen;
+import com.games.halogen.puzzlePencil.sudoku.scene.SudokuScreen;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.scene.PuzzlePencilScreen;
 
 public class PuzzlePencil extends HalogenGame {
 	public static final int VIRTUAL_WIDTH = 360;

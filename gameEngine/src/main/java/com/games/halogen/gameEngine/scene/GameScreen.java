@@ -64,10 +64,6 @@ public abstract class GameScreen implements Screen {
         injector.getRenderer().batch.setProjectionMatrix(injector.getCamera().combined);
 
         gameWorld.resize();
-
-        for(GameObject obj: gameWorld.getGameObjects()){
-            obj.invalidate();
-        }
     }
 
     @Override

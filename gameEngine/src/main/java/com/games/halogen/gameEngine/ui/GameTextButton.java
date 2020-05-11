@@ -45,4 +45,13 @@ public class GameTextButton extends GameObject {
         buttonTextHeight = h;
         invalidate();
     }
+
+    public String getText(){
+        return button.getText().toString();
+    }
+
+    public void setText(String text){
+        button.setText(text);
+        layout();
+    }
 }

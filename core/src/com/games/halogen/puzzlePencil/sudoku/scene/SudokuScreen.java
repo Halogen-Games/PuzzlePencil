@@ -1,9 +1,9 @@
-package com.games.halogen.puzzlePencil.games.sudoku.scene;
+package com.games.halogen.puzzlePencil.sudoku.scene;
 
 import com.games.halogen.gameEngine.infra.SwitchScreenCallback;
 import com.games.halogen.gameEngine.scene.GameScreen;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.world.SudokuWorld;
+import com.games.halogen.puzzlePencil.sudoku.scene.world.SudokuWorld;
 
 public class SudokuScreen extends GameScreen {
 

@@ -1,9 +1,9 @@
-package com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid;
+package com.games.halogen.puzzlePencil.sudoku.scene.view.grid;
 
 import com.badlogic.gdx.Gdx;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.SudokuObject;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Cell;
-import com.games.halogen.puzzlePencil.games.sudoku.utils.SudokuGenerator;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.scene.world.SudokuLayoutManager;
+import com.games.halogen.puzzlePencil.sudoku.utils.SudokuGenerator;
 
 import java.util.ArrayList;
 
@@ -14,7 +14,6 @@ public class SudokuGrid extends SudokuObject {
 
     private Cell activeCell;
 
-    private ArrayList<ArrayList<Integer>> gridStates;
     private ArrayList<ArrayList<Cell>> cells;
     private ArrayList<ArrayList<Cell>> tempCells;
 
@@ -26,14 +25,31 @@ public class SudokuGrid extends SudokuObject {
 
     @Override
     public void init() {
+        SudokuLayoutManager lm = getCallbacks().getLayoutManager();
+        lm.cellSize = (lm.gridSize / numRows) * (1 - lm.cellMarginToSizeRatio);
+        lm.cellMargin = (lm.gridSize / numRows) * lm.cellMarginToSizeRatio / 2;
+
         setupGrid();
 
-        SudokuGenerator.generate(this);
+        recreateGrid();
     }
 
     private void setupGrid() {
         createCells();
-        addChildObject(new com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuLines());
+        addChildObject(new SudokuLines(), true);
+    }
+
+    private void freezeFilledCells(){
+        //mark cells editable
+        for(int i=0;i<cells.size();i++){
+            for(int j=0; j<cells.get(0).size(); j++){
+                if(getCell(i,j).isEmpty()) {
+                    getCell(i, j).setEditable(true);
+                }else{
+                    getCell(i, j).setEditable(false);
+                }
+            }
+        }
     }
 
     private void createCells() {
@@ -63,6 +79,16 @@ public class SudokuGrid extends SudokuObject {
 
     public void recreateGrid() {
         SudokuGenerator.generate(this);
+        freezeFilledCells();
+        clearAllMiniums();
+    }
+
+    private void clearAllMiniums() {
+        for(int i=0;i<cells.size();i++){
+            for(int j=0; j<cells.get(0).size(); j++){
+                getCell(i, j).getMiniums().removeAllMiniums();
+            }
+        }
     }
 
     /*
@@ -71,12 +97,6 @@ public class SudokuGrid extends SudokuObject {
     @Override
     public void modelUpdated() {
         //todo: fill
-    }
-
-    @Override
-    public void layout() {
-        this.setSize(getCallbacks().getLayoutManager().gridSize, getCallbacks().getLayoutManager().gridSize);
-        this.setPosition(getCallbacks().getLayoutManager().gridPos.x, getCallbacks().getLayoutManager().gridPos.y);
     }
 
     public void saveState(){
@@ -140,11 +160,23 @@ public class SudokuGrid extends SudokuObject {
         activeCell = null;
     }
 
-    public void fillInActiveCell(int num) {
-        if(activeCell == null){
+    public void toggleInActiveCell(int num) {
+        if(activeCell == null || !activeCell.isEditable()){
             return;
         }
 
-        activeCell.setValue(num);
+        if(activeCell.getValue() == num){
+            activeCell.setEmpty();
+        }else {
+            activeCell.setValue(num);
+        }
+    }
+
+    public void toggleMiniumInActiveCell(int num) {
+        if(activeCell == null || !activeCell.isEditable()){
+            return;
+        }
+
+        activeCell.toggleMinium(num);
     }
 }

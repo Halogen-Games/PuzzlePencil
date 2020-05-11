@@ -1,7 +1,7 @@
-package com.games.halogen.puzzlePencil.games.sudoku.utils;
+package com.games.halogen.puzzlePencil.sudoku.utils;
 
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.cell.Cell;
-import com.games.halogen.puzzlePencil.games.sudoku.scene.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
 import java.util.Collections;

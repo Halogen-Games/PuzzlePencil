@@ -32,12 +32,18 @@ public abstract class GameWorld extends Stage {
     protected abstract void setLayoutManager();
     protected abstract void setGameData();
 
-    protected final void addGameObject(GameObject obj){
+    protected final void addGameObject(GameObject obj, boolean printLog){
         if(obj != null) {
-            Gdx.app.log(this.getClass().getSimpleName(), String.format("Adding Object %s", obj.getClass().getSimpleName()));
+            if(printLog) {
+                Gdx.app.log(this.getClass().getSimpleName(), String.format("Adding Object %s", obj.getClass().getSimpleName()));
+            }
             addActor(obj);
             obj.init();
         }
+    }
+
+    protected final void addGameObject(GameObject obj){
+        addGameObject(obj, false);
     }
 
     protected <T extends GameDependencyInjector> T getGameDependencyInjector(Class<T> type){
@@ -76,6 +82,14 @@ public abstract class GameWorld extends Stage {
 
     public void resize(){
         layoutManager.updateLayout(injector);
+        layout();
+        for(GameObject obj: getGameObjects()){
+            obj.invalidate();
+        }
+    }
+
+    public void layout(){
+
     }
 
     /*Screen Switching*/

@@ -106,12 +106,14 @@ public class SudokuWorld extends GameWorld {
     }
 
     void toggleInActiveCell(int num) {
-        sudokuGrid.toggleInActiveCell(num);
+        sudokuGrid.toggleValInActiveCell(num);
     }
 
     void toggleMiniumInActiveCell(int num) {
         sudokuGrid.toggleMiniumInActiveCell(num);
     }
 
-
+    void nextButtonRevealed(boolean isRevealed) {
+        nextButton.setVisible(isRevealed);
+    }
 }

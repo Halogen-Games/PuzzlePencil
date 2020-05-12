@@ -4,33 +4,33 @@ import com.badlogic.gdx.Gdx;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
 import com.games.halogen.puzzlePencil.sudoku.scene.world.SudokuLayoutManager;
 import com.games.halogen.puzzlePencil.sudoku.utils.SudokuGenerator;
+import com.games.halogen.puzzlePencil.sudoku.utils.SudokuUtils;
 
 import java.util.ArrayList;
 
 public class SudokuGrid extends SudokuObject {
     private int numBlocks;
-    private int numRows;
     private int level;
 
     private Cell activeCell;
+    private int emptyCells;
 
     private ArrayList<ArrayList<Cell>> cells;
     private ArrayList<ArrayList<Cell>> tempCells;
 
     public SudokuGrid(int numBlocks, int level) {
         this.numBlocks = numBlocks;
-        this.numRows = numBlocks*numBlocks;
         this.level = level;
     }
 
     @Override
     public void init() {
+        int numRows = getCallbacks().getData().numRows;
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
         lm.cellSize = (lm.gridSize / numRows) * (1 - lm.cellMarginToSizeRatio);
         lm.cellMargin = (lm.gridSize / numRows) * lm.cellMarginToSizeRatio / 2;
 
         setupGrid();
-
         recreateGrid();
     }
 
@@ -39,20 +39,8 @@ public class SudokuGrid extends SudokuObject {
         addChildObject(new SudokuLines(), true);
     }
 
-    private void freezeFilledCells(){
-        //mark cells editable
-        for(int i=0;i<cells.size();i++){
-            for(int j=0; j<cells.get(0).size(); j++){
-                if(getCell(i,j).isEmpty()) {
-                    getCell(i, j).setEditable(true);
-                }else{
-                    getCell(i, j).setEditable(false);
-                }
-            }
-        }
-    }
-
     private void createCells() {
+        int numRows = getCallbacks().getData().numRows;
         cells = new ArrayList<>();
         for(int i = 0; i< numRows; i++){
             ArrayList<Cell> row = new ArrayList<>();
@@ -81,6 +69,33 @@ public class SudokuGrid extends SudokuObject {
         SudokuGenerator.generate(this);
         freezeFilledCells();
         clearAllMiniums();
+        emptyCells = getEmptyCellCount();
+    }
+
+    private int getEmptyCellCount() {
+        int rv = 0;
+        for(int i=0; i<cells.size(); i++){
+            for(int j=0; j<cells.get(0).size(); j++){
+                if(getCell(i,j).isEmpty()){
+                    rv++;
+                }
+            }
+        }
+
+        return rv;
+    }
+
+    private void freezeFilledCells(){
+        //mark cells editable
+        for(int i=0;i<cells.size();i++){
+            for(int j=0; j<cells.get(0).size(); j++){
+                if(getCell(i,j).isEmpty()) {
+                    getCell(i, j).setEditable(true);
+                }else{
+                    getCell(i, j).setEditable(false);
+                }
+            }
+        }
     }
 
     private void clearAllMiniums() {
@@ -145,7 +160,7 @@ public class SudokuGrid extends SudokuObject {
     }
 
     public int getNumRows() {
-        return numRows;
+        return getCallbacks().getData().numRows;
     }
 
     public void setActiveCell(Cell c){
@@ -160,16 +175,35 @@ public class SudokuGrid extends SudokuObject {
         activeCell = null;
     }
 
-    public void toggleInActiveCell(int num) {
+    public void toggleValInActiveCell(int num) {
         if(activeCell == null || !activeCell.isEditable()){
             return;
         }
 
         if(activeCell.getValue() == num){
             activeCell.setEmpty();
+            emptyCells++;
         }else {
             activeCell.setValue(num);
+            emptyCells--;
         }
+
+        SudokuUtils.updateCellValidityOnUpdate(this, activeCell);
+
+        getCallbacks().nextButtonRevealed(emptyCells == 0 && getInvalidCellCount() == 0);
+    }
+
+    private int getInvalidCellCount(){
+        int rv = 0;
+        for(int i=0; i<cells.size(); i++){
+            for(int j=0; j<cells.get(0).size(); j++){
+                if(!getCell(i,j).isValid()){
+                    rv++;
+                }
+            }
+        }
+
+        return rv;
     }
 
     public void toggleMiniumInActiveCell(int num) {

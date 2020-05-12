@@ -45,4 +45,8 @@ public class SudokuWorldCallbacks extends GameWorldCallbacks {
     public void toggleMiniumInActiveCell(int num) {
         getWorld().toggleMiniumInActiveCell(num);
     }
+
+    public void nextButtonRevealed(boolean isRevealed) {
+        getWorld().nextButtonRevealed(isRevealed);
+    }
 }

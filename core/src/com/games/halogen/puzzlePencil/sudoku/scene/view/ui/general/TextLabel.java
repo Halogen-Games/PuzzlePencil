@@ -1,20 +1,24 @@
 package com.games.halogen.puzzlePencil.sudoku.scene.view.ui.general;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
+import com.badlogic.gdx.utils.Align;
 import com.games.halogen.puzzlePencil.scene.view.PuzzlePencilObject;
 
 public class TextLabel extends PuzzlePencilObject {
     private Label label;
 
     private float scale;
-    private int alignment;
+    private Vector2 alignment;
 
     public TextLabel(String text, LabelStyle style){
         this.label = new Label(text, style);
+        this.label.setAlignment(Align.center);
         this.addActor(this.label);
 
+        this.alignment = new Vector2(0.5f, 0.5f);
         this.scale = 1;
     }
 
@@ -28,7 +32,7 @@ public class TextLabel extends PuzzlePencilObject {
         super.setSize(width, height);
         this.label.setSize(width, height);
 
-        this.setOrigin(this.alignment);
+        this.setOrigin(this.alignment.x * getWidth(), this.alignment.y * getHeight());
     }
 
     public void setTextHeight(float h){
@@ -37,9 +41,9 @@ public class TextLabel extends PuzzlePencilObject {
         this.setScale(scale);
     }
 
-    public void setAlignment(int alignment) {
-        this.alignment = alignment;
-        this.setOrigin(alignment);
+    public void setAlignment(float x, float y) {
+        this.alignment.set(x,y);
+        this.setOrigin(this.alignment.x * getWidth(), this.alignment.y * getHeight());
     }
 
     @Override

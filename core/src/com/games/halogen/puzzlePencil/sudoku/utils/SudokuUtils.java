@@ -7,13 +7,14 @@ import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 import java.util.ArrayList;
 import java.util.Collections;
 
-class SudokuUtils {
+public class SudokuUtils {
+
+
     public enum UnitType{
         ROW,
         COLUMN,
-        BLOCK
+        BLOCK;
     }
-
     static ArrayList<Cell> getRandomizedCellsArray(SudokuGrid grid){
         int blockSize = grid.getBlockSize();
         int gridSize = blockSize*blockSize;
@@ -33,6 +34,7 @@ class SudokuUtils {
     /*
     Finds miniums for all cells
      */
+
     static void findMiniums(SudokuGrid grid) {
         for(int i=0; i<grid.getNumRows(); i++){
             for(int j=0; j<grid.getNumRows(); j++){
@@ -40,10 +42,10 @@ class SudokuUtils {
             }
         }
     }
-
     /*
     Returns the miniums of current cell according to given grid
     */
+
     private static void findMiniumsForCells(SudokuGrid grid, Cell cell) {
         Miniums miniums = cell.getMiniums();
         miniums.fillAll(grid.getNumRows());
@@ -59,10 +61,10 @@ class SudokuUtils {
 
         cell.setMiniums(miniums);
     }
-
     /*
     Get cells of a specific type of unit in which the given cell belongs
     */
+
     private static ArrayList<Cell> getUnitCells(SudokuGrid grid, Cell cell, UnitType unitType){
         ArrayList<Cell> rv = new ArrayList<>();
 
@@ -98,5 +100,29 @@ class SudokuUtils {
         }
 
         return rv;
+    }
+
+    /*
+    * Updates the validity status of all cells if the given cell is changed
+     */
+    public static void updateCellValidityOnUpdate(SudokuGrid grid, Cell cell) {
+        int cellVal = cell.getValue();
+
+        //check all the three units one by one
+        boolean isValid = true;
+        for(UnitType u:UnitType.values()){
+            for (Cell c:getUnitCells(grid, cell, u)) {
+                if (!c.isEmpty()) {
+                    if(c != cell && c.getValue() == cellVal && c.getValue() != -1){
+                        c.setValidity(false);
+                        isValid = false;
+                    }else{
+                        c.setValidity(true);
+                    }
+                }
+            }
+        }
+
+        cell.setValidity(isValid);
     }
 }

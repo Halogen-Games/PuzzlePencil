@@ -17,6 +17,7 @@ public class Cell extends SudokuObject {
 
     private boolean isSelected;
     private boolean isEditable;
+    private boolean isNumberValid;
 
     private Image bgImg;
 
@@ -48,8 +49,9 @@ public class Cell extends SudokuObject {
         //set text label
         valueLabel = new TextLabel("", di.getAssetManager().fontLabelStyle);
         valueLabel.setColor(lm.fontColor);
-        valueLabel.setAlignment(Align.center);
+        valueLabel.setAlignment(0.5f,0.5f);
         valueLabel.setSize(bgImg.getWidth(), bgImg.getHeight());
+        valueLabel.setPosition(bgImg.getX(), bgImg.getY());
 
         valueLabel.setTextHeight(lm.cellSize * lm.cellTextRatio);
         this.addActor(valueLabel);
@@ -133,6 +135,23 @@ public class Cell extends SudokuObject {
 
     boolean isEditable() {
         return isEditable;
+    }
+
+    public void setValidity(boolean valid){
+        this.isNumberValid = valid;
+        if(this.isNumberValid){
+            if(isEditable()) {
+                this.valueLabel.setColor(getCallbacks().getLayoutManager().editableFontColor);
+            }else{
+                this.valueLabel.setColor(getCallbacks().getLayoutManager().fontColor);
+            }
+        }else{
+            this.valueLabel.setColor(getCallbacks().getLayoutManager().errorFontColor);
+        }
+    }
+
+    boolean isValid(){
+        return isNumberValid;
     }
 
     void toggleMinium(int num) {

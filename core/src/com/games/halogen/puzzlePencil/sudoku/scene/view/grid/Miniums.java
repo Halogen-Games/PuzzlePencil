@@ -1,5 +1,6 @@
 package com.games.halogen.puzzlePencil.sudoku.scene.view.grid;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Align;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.general.TextLabel;
@@ -20,13 +21,14 @@ public class Miniums extends SudokuObject {
 
     @Override
     public void init() {
-        ArrayList<Integer> alignment = getNumberAlignments();
 
-        for(int i=0; i<9; i++){
+        for(int i=0; i<getCallbacks().getData().numRows; i++){
             TextLabel l = new TextLabel(Integer.toString(i+1), getCallbacks().getDependencyInjector().getAssetManager().fontLabelStyle);
-            l.setSize(getWidth(), getHeight());
 
-            l.setAlignment(alignment.get(i));
+            Vector2 alignment = getNumberAlignments(i);
+            l.setAlignment(alignment.x, alignment.y);
+
+            l.setSize(getWidth(), getHeight());
             l.setColor(getCallbacks().getLayoutManager().editableFontColor);
 
             l.setTextHeight(l.getHeight() * getCallbacks().getLayoutManager().miniumsTextRatio);
@@ -83,23 +85,6 @@ public class Miniums extends SudokuObject {
         labels.get(i - 1).setVisible(false);
     }
 
-    private ArrayList<Integer> getNumberAlignments(){
-        ArrayList<Integer> alignments = new ArrayList<>();
-        alignments.add(Align.topLeft);
-        alignments.add(Align.top);
-        alignments.add(Align.topRight);
-
-        alignments.add(Align.left);
-        alignments.add(Align.center);
-        alignments.add(Align.right);
-
-        alignments.add(Align.bottomLeft);
-        alignments.add(Align.bottom);
-        alignments.add(Align.bottomRight);
-
-        return alignments;
-    }
-
     void set(Miniums miniums) {
         if(miniums == this){
             //don;t set me from myself
@@ -124,5 +109,28 @@ public class Miniums extends SudokuObject {
             this.remove(nums.get(i));
             i--;
         }
+    }
+
+    private Vector2 getNumberAlignments(int num){
+        if(num > getCallbacks().getData().numRows){
+            throw new RuntimeException("minium number greater than num rows, can't fetch alignment");
+        }
+        int numBlocks = getCallbacks().getData().numBlocks;
+        int numRows = getCallbacks().getData().numRows;
+
+        if(numRows == 1){
+            return new Vector2(0.5f,0.5f);
+        }
+
+        float step = 1f/(numBlocks - 1);
+
+        Vector2 rv = new Vector2();
+
+        int div = num / numBlocks;
+        int remainder = num % numBlocks;
+
+        rv.set(remainder * step, 1 - div * step);
+
+        return rv;
     }
 }

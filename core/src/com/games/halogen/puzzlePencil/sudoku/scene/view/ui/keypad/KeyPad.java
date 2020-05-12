@@ -22,7 +22,7 @@ public class KeyPad extends SudokuObject {
     }
 
     private void setupNumKeys() {
-        for(int i=0;i<9;i++){
+        for(int i=0;i<getCallbacks().getData().numRows;i++){
             final int num = i+1;
             SudokuTextButton butt = new SudokuTextButton(Integer.toString(i+1)){
                 @Override
@@ -72,7 +72,7 @@ public class KeyPad extends SudokuObject {
     public void layout() {
         super.layout();
 
-        float buttonSize = (getWidth() / buttons.size()) * 0.8f;
+        float buttonSize = (getWidth() / buttons.size()) * 0.95f;
         float buttMargin = ((getWidth() / buttons.size()) - buttonSize)/2;
 
         for(int i=0; i<buttons.size(); i++){

@@ -33,9 +33,10 @@ public class SudokuLayoutManager extends GameLayoutManager {
 
     public Color editableFontColor = new Color().set(0x666666ff);
     public Color fontColor = new Color().set(0x000000ff);
+    public Color errorFontColor = new Color(0xcc0000ff);
 
     public float getGridLineThickness(){
-        return cellSize * cellMarginToSizeRatio * 2f;
+        return cellSize * cellMarginToSizeRatio * 3f;
     }
 
     @Override

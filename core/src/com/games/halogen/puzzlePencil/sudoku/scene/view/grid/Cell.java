@@ -25,13 +25,18 @@ public class Cell extends SudokuObject {
         this.coordinates = new IntPair(r,c);
     }
 
+    void setCoordinates(int i, int j) {
+        this.coordinates.set(i,j);
+        this.setPosition(this.coordinates.getSecond()*getWidth(), this.coordinates.getFirst()*getHeight());
+    }
+
     @Override
     public void init() {
         PuzzlePencilInjector di = getCallbacks().getDependencyInjector();
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
 
         this.setSize(lm.cellSize + 2*lm.cellMargin, lm.cellSize + 2*lm.cellMargin);
-        this.setPosition(this.coordinates.getFirst()*getWidth(), this.coordinates.getSecond()*getHeight());
+        this.setPosition(this.coordinates.getSecond()*getWidth(), this.coordinates.getFirst()*getHeight());
 
         //set bg
         bgImg = new Image(di.getAssetManager().getSquareRegion());
@@ -87,7 +92,7 @@ public class Cell extends SudokuObject {
         //todo: fill
     }
 
-    void setValue(int val) {
+    public void setValue(int val) {
         if(val == -1){
             setEmpty();
         }else {
@@ -122,6 +127,14 @@ public class Cell extends SudokuObject {
 
     public IntPair getCoordinates(){
         return coordinates;
+    }
+
+    public int getRow(){
+        return coordinates.getFirst();
+    }
+
+    public int getColumn(){
+        return coordinates.getSecond();
     }
 
     void setEditable(boolean editable){

@@ -52,20 +52,18 @@ public class Miniums extends SudokuObject {
         }
     }
 
-    public Miniums fillAll(int num) {
+    public void fillAll(int num) {
         this.nums.clear();
         for(int i=1;i<=num;i++){
             this.add(i);
         }
-
-        return this;
     }
 
     public int size() {
         return nums.size();
     }
 
-    private void add(Integer i) {
+    public void add(Integer i) {
         if(i < 1 || i > getCallbacks().getData().numRows){
             throw new RuntimeException("Miniums value out of range:" + i);
         }
@@ -96,7 +94,7 @@ public class Miniums extends SudokuObject {
         }
     }
 
-    void toggleNum(Integer num) {
+    public void toggleNum(Integer num) {
         if(nums.contains(num)){
             this.remove(num);
         }else{
@@ -104,7 +102,7 @@ public class Miniums extends SudokuObject {
         }
     }
 
-    void removeAllMiniums() {
+    public void clearAllMiniums() {
         for(int i = 0;i < nums.size();i++){
             this.remove(nums.get(i));
             i--;
@@ -132,5 +130,13 @@ public class Miniums extends SudokuObject {
         rv.set(remainder * step, 1 - div * step);
 
         return rv;
+    }
+
+    public boolean hasNum(Integer i) {
+        return nums.contains(i);
+    }
+
+    public ArrayList<Integer> getAllNums() {
+        return new ArrayList<>(nums);
     }
 }

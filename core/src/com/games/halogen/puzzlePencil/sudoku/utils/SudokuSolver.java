@@ -4,6 +4,8 @@ import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Miniums;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
+import java.util.ArrayList;
+
 /**
  * -----Scanning Techniques-----
  * level 1 - Naked Singles
@@ -15,7 +17,7 @@ import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
  * Note: Can generalize to triples and quads (uninteresting?)
  *
  * -----lower level of X-Wing Techniques (2 length chain of singles)------
- *  Example(2-chain): same digit twice only in Same unit, can remove this Digit from their other common units.
+ *  Example(2-chain): same digit twice in a single unit, can remove this Digit from their other common units.
  *
  * -----X-Wing Like techniques (4 length chains of pairs)-----
  * General Technique :
@@ -54,6 +56,7 @@ class SudokuSolver {
 
             //Level 2 - Hidden Singles
             if (removeHiddenSingles(grid)) {
+                System.out.println("Removing Hidden Single");
                 fillPossible = true;
                 continue;
             }
@@ -68,7 +71,9 @@ class SudokuSolver {
         }
     }
 
-    /*If a cell has only one possible candidate, fill it*/
+    /*
+    If a cell has only one possible candidate, fill it
+    */
     private static boolean fillAllNakedSingles(SudokuGrid grid){
         for(int i=0; i<grid.getNumRows(); i++){
             for(int j=0; j<grid.getNumRows(); j++){
@@ -81,9 +86,54 @@ class SudokuSolver {
         return false;
     }
 
-    /*Converts all hidden singles to naked singles*/
+    /*
+    Converts all hidden singles to naked singles
+    */
     private static boolean removeHiddenSingles(SudokuGrid grid) {
-        return false;
+        int numRows = grid.getNumRows();
+        boolean isRemoved = false;
+
+        //search all rows
+        for(int i=0;i<numRows;i++){
+            while(removeHiddenSinglesInSet(SudokuUtils.getAllUnitCells(grid, i, 0, SudokuUtils.UnitType.ROW), numRows)){
+                isRemoved = true;
+            }
+        }
+
+        for(int i=0;i<numRows;i++){
+            while(removeHiddenSinglesInSet(SudokuUtils.getAllUnitCells(grid, 0, i, SudokuUtils.UnitType.COLUMN), numRows)){
+                isRemoved = true;
+            }
+        }
+
+        for(int i=0;i<numRows;i++){
+            while(removeHiddenSinglesInSet(SudokuUtils.getAllUnitCells(grid, ((i/3)*3)%9, (i*3)%9, SudokuUtils.UnitType.BLOCK), numRows)){
+                isRemoved = true;
+            }
+        }
+        return isRemoved;
+    }
+
+    //Remove hidden singles in a given cell set
+    private static boolean removeHiddenSinglesInSet(ArrayList<Cell> cells, int numRows){
+        boolean isRemoved = false;
+
+        for(int i=1; i<=numRows; i++){
+            Cell foundCell = null;
+            int count = 0;
+            for(Cell c:cells){
+                if(c.getMiniums().hasNum(i)){
+                    foundCell = c;
+                    count++;
+                }
+            }
+            if(count == 1){
+                foundCell.getMiniums().clearAllMiniums();
+                foundCell.getMiniums().add(i);
+            }
+        }
+
+        return isRemoved;
     }
 
     /*Processes max difficulty, will be removed once all checks are added*/

@@ -18,6 +18,11 @@ public class Pair<T, U> {
         return second;
     }
 
+    public void set(T first, U second){
+        this.first = first;
+        this.second = second;
+    }
+
     public static class IntPair extends Pair<Integer, Integer>{
         public IntPair(Integer first, Integer second) {
             super(first, second);

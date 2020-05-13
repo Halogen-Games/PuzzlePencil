@@ -5,31 +5,17 @@ import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Miniums;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SudokuUtils {
-
+    //prevent instantiation
+    private SudokuUtils(){};
 
     public enum UnitType{
         ROW,
         COLUMN,
         BLOCK;
     }
-    static ArrayList<Cell> getRandomizedCellsArray(SudokuGrid grid){
-        int blockSize = grid.getBlockSize();
-        int gridSize = blockSize*blockSize;
 
-        ArrayList<Cell> rv = new ArrayList<>();
-
-        for(int i=0; i< gridSize; i++){
-            for(int j=0; j<gridSize; j++){
-                rv.add(grid.getCell(i,j));
-            }
-        }
-
-        Collections.shuffle(rv);
-        return rv;
-    }
 
     /*
     Finds miniums for all cells
@@ -38,7 +24,7 @@ public class SudokuUtils {
     static void findMiniums(SudokuGrid grid) {
         for(int i=0; i<grid.getNumRows(); i++){
             for(int j=0; j<grid.getNumRows(); j++){
-                findMiniumsForCells(grid, grid.getCell(i,j));
+                findMiniumsForCell(grid, grid.getCell(i,j));
             }
         }
     }
@@ -46,13 +32,13 @@ public class SudokuUtils {
     Returns the miniums of current cell according to given grid
     */
 
-    private static void findMiniumsForCells(SudokuGrid grid, Cell cell) {
+    static void findMiniumsForCell(SudokuGrid grid, Cell cell) {
         Miniums miniums = cell.getMiniums();
         miniums.fillAll(grid.getNumRows());
 
         //check all the three units one by one
         for(UnitType u:UnitType.values()){
-            for (Cell c:getUnitCells(grid, cell, u)) {
+            for (Cell c: getAllUnitCells(grid, cell.getRow(), cell.getColumn(), u)) {
                 if (!c.isEmpty()) {
                     miniums.remove(c.getValue());
                 }
@@ -61,39 +47,36 @@ public class SudokuUtils {
 
         cell.setMiniums(miniums);
     }
+
     /*
     Get cells of a specific type of unit in which the given cell belongs
     */
-
-    private static ArrayList<Cell> getUnitCells(SudokuGrid grid, Cell cell, UnitType unitType){
+    static ArrayList<Cell> getAllUnitCells(SudokuGrid grid, int row, int column, UnitType unitType){
         ArrayList<Cell> rv = new ArrayList<>();
 
         int gridSize = grid.getNumRows();
         int blockSize = (int) Math.sqrt(gridSize);
 
-        int cellRow = cell.getCoordinates().getFirst();
-        int cellCol = cell.getCoordinates().getSecond();
-
-        int blockRowOffset = (cellRow / blockSize) * blockSize;
-        int blockColOffset = (cellCol / blockSize) * blockSize;
+        int blockRowOffset = (row / blockSize) * blockSize;
+        int blockColOffset = (column / blockSize) * blockSize;
 
         switch(unitType){
             case ROW:
-                for (int col = 0; col < grid.getNumRows(); col++) {
-                    rv.add(grid.getCell(cellRow,col));
+                for (int c = 0; c < grid.getNumRows(); c++) {
+                    rv.add(grid.getCell(row,c));
                 }
                 break;
 
             case COLUMN:
-                for (int row = 0; row < grid.getNumRows(); row++) {
-                    rv.add(grid.getCell(row,cellCol));
+                for (int r = 0; r < grid.getNumRows(); r++) {
+                    rv.add(grid.getCell(r,column));
                 }
                 break;
 
             case BLOCK:
-                for (int row = 0; row < blockSize; row++) {
-                    for (int col = 0; col < blockSize; col++) {
-                        rv.add(grid.getCell(row + blockRowOffset, col + blockColOffset));
+                for (int r = 0; r < blockSize; r++) {
+                    for (int c = 0; c < blockSize; c++) {
+                        rv.add(grid.getCell(r + blockRowOffset, c + blockColOffset));
                     }
                 }
                 break;
@@ -111,7 +94,7 @@ public class SudokuUtils {
         //check all the three units one by one
         boolean isValid = true;
         for(UnitType u:UnitType.values()){
-            for (Cell c:getUnitCells(grid, cell, u)) {
+            for (Cell c: getAllUnitCells(grid, cell.getRow(), cell.getColumn(), u)) {
                 if (!c.isEmpty()) {
                     if(c != cell && c.getValue() == cellVal && c.getValue() != -1){
                         c.setValidity(false);

@@ -40,6 +40,7 @@ public class SudokuGrid extends SudokuObject {
     }
 
     private void createCells() {
+        SudokuLayoutManager lm = getCallbacks().getLayoutManager();
         int numRows = getCallbacks().getData().numRows;
         cells = new ArrayList<>();
         for(int i = 0; i< numRows; i++){
@@ -101,7 +102,7 @@ public class SudokuGrid extends SudokuObject {
     private void clearAllMiniums() {
         for(int i=0;i<cells.size();i++){
             for(int j=0; j<cells.get(0).size(); j++){
-                getCell(i, j).getMiniums().removeAllMiniums();
+                getCell(i, j).getMiniums().clearAllMiniums();
             }
         }
     }
@@ -153,10 +154,6 @@ public class SudokuGrid extends SudokuObject {
 
     public int getLevel() {
         return this.level;
-    }
-
-    public int getBlockSize() {
-        return numBlocks;
     }
 
     public int getNumRows() {
@@ -212,5 +209,38 @@ public class SudokuGrid extends SudokuObject {
         }
 
         activeCell.toggleMinium(num);
+    }
+
+    public int getNumBlocks() {
+        return numBlocks;
+    }
+
+    public void transpose(){
+        for(int i = 0; i<this.getNumRows(); i++){
+            for(int j=i+1; j<this.getNumRows(); j++){
+                int v = this.getCell(i,j).getValue();
+                this.getCell(i,j).setValue(this.getCell(j,i).getValue());
+                this.getCell(j,i).setValue(v);
+            }
+        }
+    }
+
+    public void rearrangeRows(ArrayList<Integer> indices){
+        if(this.getNumRows() != indices.size()){
+            throw new RuntimeException("");
+        }
+
+        ArrayList<ArrayList<Cell>> tempCells = new ArrayList<>(cells);
+
+        cells.clear();
+        for(int i=0; i<indices.size();i++){
+            cells.add(tempCells.get(indices.get(i)));
+        }
+
+        for(int i=0; i<cells.size(); i++){
+            for(int j=0;j<cells.get(0).size(); j++){
+                cells.get(i).get(j).setCoordinates(i,j);
+            }
+        }
     }
 }

@@ -1,19 +1,18 @@
 package com.games.halogen.puzzlePencil.sudoku.utils;
 
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Miniums;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
 
 public class SudokuUtils {
     //prevent instantiation
-    private SudokuUtils(){};
+    private SudokuUtils(){}
 
     public enum UnitType{
         ROW,
         COLUMN,
-        BLOCK;
+        BLOCK
     }
 
 
@@ -28,24 +27,38 @@ public class SudokuUtils {
             }
         }
     }
+
     /*
     Returns the miniums of current cell according to given grid
     */
+    private static void findMiniumsForCell(SudokuGrid grid, Cell cell) {
+        cell.getMiniums().clearAllMiniums();
+        ArrayList<Integer> validVals = getValidCandidates(grid, cell);
 
-    static void findMiniumsForCell(SudokuGrid grid, Cell cell) {
-        Miniums miniums = cell.getMiniums();
-        miniums.fillAll(grid.getNumRows());
+        for(int i=0; i<validVals.size(); i++){
+            cell.getMiniums().add(validVals.get(i));
+        }
+    }
 
-        //check all the three units one by one
-        for(UnitType u:UnitType.values()){
-            for (Cell c: getAllUnitCells(grid, cell.getRow(), cell.getColumn(), u)) {
+    /*
+    Return possible candidates that can be filed in given cell
+     */
+    static ArrayList<Integer> getValidCandidates(SudokuGrid grid, Cell cell){
+        ArrayList<Integer> ints = new ArrayList<>();
+
+        for(int i=1; i<=grid.getNumRows(); i++){
+            ints.add(i);
+        }
+
+        for(UnitType u:UnitType.values()) {
+            for (Cell c : getAllUnitCells(grid, cell.getRow(), cell.getColumn(), u)) {
                 if (!c.isEmpty()) {
-                    miniums.remove(c.getValue());
+                    ints.remove((Integer)c.getValue());
                 }
             }
         }
 
-        cell.setMiniums(miniums);
+        return ints;
     }
 
     /*

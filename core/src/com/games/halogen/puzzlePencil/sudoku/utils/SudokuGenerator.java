@@ -14,10 +14,13 @@ public class SudokuGenerator {
     private SudokuGenerator(){}
 
     public static void generate(SudokuGrid grid) {
-        if(!generateFilledGrid(grid)){
-            throw new RuntimeException("unable to fill grid, possible algo error");
+        grid.clearAllCells();
+        if (!generateFilledGrid(grid)) {
+            throw new RuntimeException("unable to fill grid, generation algo error");
         }
-//        randomlyRemoveNumbers(grid);
+        randomlyRemoveNumbers(grid);
+
+        SudokuUtils.findMiniums(grid);
     }
 
     private static boolean generateFilledGrid(SudokuGrid grid) {
@@ -50,11 +53,7 @@ public class SudokuGenerator {
 
             //fill next cell
             Cell nextCell = getCellFromIndex(grid, cellNum + 1);
-            SudokuUtils.findMiniumsForCell(grid, nextCell);
-            ArrayList<Integer> ints = nextCell.getMiniums().getAllNums();
-            Collections.shuffle(ints, random);
-
-            if(fillRecursively(grid, cellNum + 1, ints)){
+            if(fillRecursively(grid, cellNum + 1,getShuffledValidCandidates(grid, nextCell))){
                 return true;
             }
         }
@@ -68,7 +67,7 @@ public class SudokuGenerator {
     numbers are only removed if they can be filled back uniquely
      */
     private static void randomlyRemoveNumbers(SudokuGrid cells) {
-        ArrayList<Cell> randomizedCells = getRandomizedCellsArray(cells);
+        ArrayList<Cell> randomizedCells = getShuffledCellsArray(cells);
 
         for(int i=0; i<randomizedCells.size(); i++) {
             removeNumberInCell(cells, randomizedCells.get(i));
@@ -91,7 +90,7 @@ public class SudokuGenerator {
         }
     }
 
-    static ArrayList<Cell> getRandomizedCellsArray(SudokuGrid grid){
+    private static ArrayList<Cell> getShuffledCellsArray(SudokuGrid grid){
         int blockSize = grid.getNumBlocks();
         int gridSize = blockSize*blockSize;
 
@@ -114,5 +113,11 @@ public class SudokuGenerator {
         }
 
         return grid.getCell(cellNum / grid.getNumRows(), cellNum % grid.getNumRows());
+    }
+
+    private static ArrayList<Integer> getShuffledValidCandidates(SudokuGrid grid, Cell cell){
+        ArrayList<Integer> ints = SudokuUtils.getValidCandidates(grid, cell);
+        Collections.shuffle(ints, random);
+        return ints;
     }
 }

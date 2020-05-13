@@ -215,31 +215,11 @@ public class SudokuGrid extends SudokuObject {
         return numBlocks;
     }
 
-    public void transpose(){
-        for(int i = 0; i<this.getNumRows(); i++){
-            for(int j=i+1; j<this.getNumRows(); j++){
-                int v = this.getCell(i,j).getValue();
-                this.getCell(i,j).setValue(this.getCell(j,i).getValue());
-                this.getCell(j,i).setValue(v);
-            }
-        }
-    }
-
-    public void rearrangeRows(ArrayList<Integer> indices){
-        if(this.getNumRows() != indices.size()){
-            throw new RuntimeException("");
-        }
-
-        ArrayList<ArrayList<Cell>> tempCells = new ArrayList<>(cells);
-
-        cells.clear();
-        for(int i=0; i<indices.size();i++){
-            cells.add(tempCells.get(indices.get(i)));
-        }
-
-        for(int i=0; i<cells.size(); i++){
-            for(int j=0;j<cells.get(0).size(); j++){
-                cells.get(i).get(j).setCoordinates(i,j);
+    public void clearAllCells() {
+        for(int i=0; i<getNumRows(); i++){
+            for(int j=0; j<getNumRows(); j++){
+                getCell(i,j).setEmpty();
+                getCell(i,j).getMiniums().clearAllMiniums();
             }
         }
     }

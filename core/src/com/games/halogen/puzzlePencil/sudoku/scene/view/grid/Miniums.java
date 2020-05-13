@@ -32,7 +32,7 @@ public class Miniums extends SudokuObject {
             l.setColor(getCallbacks().getLayoutManager().editableFontColor);
 
             l.setTextHeight(l.getHeight() * getCallbacks().getLayoutManager().miniumsTextRatio);
-
+            l.setVisible(false);
             labels.add(l);
 
             this.addChildObject(l);
@@ -52,13 +52,6 @@ public class Miniums extends SudokuObject {
         }
     }
 
-    public void fillAll(int num) {
-        this.nums.clear();
-        for(int i=1;i<=num;i++){
-            this.add(i);
-        }
-    }
-
     public int size() {
         return nums.size();
     }
@@ -75,7 +68,7 @@ public class Miniums extends SudokuObject {
         return nums.get(i);
     }
 
-    public void remove(Integer i) {
+    private void remove(Integer i) {
         if(i < 1 || i > getCallbacks().getData().numRows){
             throw new RuntimeException("Miniums value out of range:" + i);
         }
@@ -88,13 +81,13 @@ public class Miniums extends SudokuObject {
             //don;t set me from myself
             return;
         }
-        nums.clear();
+        clearAllMiniums();
         for(int i=0;i<miniums.size();i++){
             this.add(miniums.get(i));
         }
     }
 
-    public void toggleNum(Integer num) {
+    void toggleNum(Integer num) {
         if(nums.contains(num)){
             this.remove(num);
         }else{
@@ -134,9 +127,5 @@ public class Miniums extends SudokuObject {
 
     public boolean hasNum(Integer i) {
         return nums.contains(i);
-    }
-
-    public ArrayList<Integer> getAllNums() {
-        return new ArrayList<>(nums);
     }
 }

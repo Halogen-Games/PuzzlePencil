@@ -3,6 +3,7 @@ package com.games.halogen.puzzlePencil.sudoku.utils;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Miniums;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.utils.SudokuUtils.UnitType;
 
 import java.util.ArrayList;
 
@@ -38,36 +39,31 @@ class SudokuSolver {
     Solves the grid up to a certain point only
      */
     static void solveGridCell(SudokuGrid grid, Cell cell) {
-        boolean fillPossible = true;
+        SudokuUtils.findMiniums(grid);
 
-        while(cell.isEmpty() && fillPossible) {
-            fillPossible = false;
-            SudokuUtils.findMiniums(grid);
-
+        while(cell.isEmpty()) {
             //Level 1 - Naked Singles
             if (fillAllNakedSingles(grid)) {
-                fillPossible = true;
+                SudokuUtils.findMiniums(grid);
                 continue;
-            }
-
-            if (grid.getLevel() == 1) {
-                continue;
+            }else if (grid.getLevel() == 1) {
+                break;
             }
 
             //Level 2 - Hidden Singles
             if (removeHiddenSingles(grid)) {
-                System.out.println("Removing Hidden Single");
-                fillPossible = true;
                 continue;
+            }else if (grid.getLevel() == 2) {
+                break;
             }
 
-            if (grid.getLevel() == 2) {
+            //Level 3 - Naked Pairs
+            if (removeNakedPairs(grid)) {
                 continue;
+            }else if (grid.getLevel() == 3) {
+                break;
             }
-
-            if(processMaxDifficultyRule(grid)){
-                fillPossible = true;
-            }
+            break;
         }
     }
 
@@ -75,39 +71,52 @@ class SudokuSolver {
     If a cell has only one possible candidate, fill it
     */
     private static boolean fillAllNakedSingles(SudokuGrid grid){
+        boolean isFilled = false;
         for(int i=0; i<grid.getNumRows(); i++){
             for(int j=0; j<grid.getNumRows(); j++){
+                if(!grid.getCell(i,j).isEmpty()){
+                    continue;
+                }
                 Miniums miniums = grid.getCell(i,j).getMiniums();
                 if(miniums.size() == 1){
                     grid.setValue(i,j,miniums.get(0));
+                    isFilled = true;
                 }
             }
         }
-        return false;
+        return isFilled;
     }
 
     /*
     Converts all hidden singles to naked singles
     */
     private static boolean removeHiddenSingles(SudokuGrid grid) {
+        int numBlocks = grid.getNumBlocks();
         int numRows = grid.getNumRows();
         boolean isRemoved = false;
 
         //search all rows
         for(int i=0;i<numRows;i++){
-            while(removeHiddenSinglesInSet(SudokuUtils.getAllUnitCells(grid, i, 0, SudokuUtils.UnitType.ROW), numRows)){
+            ArrayList<Cell> rowCells = SudokuUtils.getAllUnitCells(grid, i, 0, UnitType.ROW);
+            while(removeHiddenSinglesInSet(rowCells, numRows)){
                 isRemoved = true;
             }
         }
 
+        //search all columns
         for(int i=0;i<numRows;i++){
-            while(removeHiddenSinglesInSet(SudokuUtils.getAllUnitCells(grid, 0, i, SudokuUtils.UnitType.COLUMN), numRows)){
+            ArrayList<Cell> colCells = SudokuUtils.getAllUnitCells(grid, 0, i, UnitType.COLUMN);
+            while(removeHiddenSinglesInSet(colCells, numRows)){
                 isRemoved = true;
             }
         }
 
+        //search all blocks
         for(int i=0;i<numRows;i++){
-            while(removeHiddenSinglesInSet(SudokuUtils.getAllUnitCells(grid, ((i/3)*3)%9, (i*3)%9, SudokuUtils.UnitType.BLOCK), numRows)){
+            int row = ((i/numBlocks)*numBlocks)%numRows;
+            int column = (i*numBlocks)%numRows;
+            ArrayList<Cell> blockCells = SudokuUtils.getAllUnitCells(grid, row, column, UnitType.BLOCK);
+            while(removeHiddenSinglesInSet(blockCells, numRows)){
                 isRemoved = true;
             }
         }
@@ -128,12 +137,21 @@ class SudokuSolver {
                 }
             }
             if(count == 1){
+                if(foundCell.getMiniums().size() == 1){
+                    //this is a naked single, not a hidden single
+                    return false;
+                }
                 foundCell.getMiniums().clearAllMiniums();
                 foundCell.getMiniums().add(i);
+                isRemoved = true;
             }
         }
 
         return isRemoved;
+    }
+
+    private static boolean removeNakedPairs(SudokuGrid grid) {
+        return false;
     }
 
     /*Processes max difficulty, will be removed once all checks are added*/

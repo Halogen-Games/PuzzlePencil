@@ -113,7 +113,8 @@ public class SudokuWorld extends GameWorld {
         sudokuGrid.toggleMiniumInActiveCell(num);
     }
 
-    void nextButtonRevealed(boolean isRevealed) {
+    void nextButtonRevealed(boolean isRevealed)
+    {
         nextButton.setVisible(isRevealed);
     }
 }

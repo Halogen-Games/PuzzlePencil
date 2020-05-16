@@ -16,7 +16,9 @@ public class NextButton extends SudokuTextButton {
         this.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                getCallbacks().getData().levelPlus();
                 getCallbacks().createNewGrid();
+                NextButton.this.setVisible(false);
             }
         });
     }

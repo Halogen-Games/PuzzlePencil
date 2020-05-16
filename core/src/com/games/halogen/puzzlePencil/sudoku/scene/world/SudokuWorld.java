@@ -21,7 +21,7 @@ public class SudokuWorld extends GameWorld {
         bg = new Background();
         this.addGameObject(bg, true);
 
-        sudokuGrid = new SudokuGrid(getData().numBlocks, getData().level);
+        sudokuGrid = new SudokuGrid(getData().numBlocks);
         this.addGameObject(sudokuGrid, true);
 
         nextButton = new NextButton("Next Puzzle");

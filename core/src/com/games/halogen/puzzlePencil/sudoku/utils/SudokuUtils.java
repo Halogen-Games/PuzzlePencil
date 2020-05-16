@@ -4,6 +4,7 @@ import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
 import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class SudokuUtils {
     //prevent instantiation
@@ -20,7 +21,7 @@ public class SudokuUtils {
     Finds miniums for all cells
      */
 
-    static void findMiniums(SudokuGrid grid) {
+    public static void findMiniums(SudokuGrid grid) {
         for(int i=0; i<grid.getNumRows(); i++){
             for(int j=0; j<grid.getNumRows(); j++){
                 findMiniumsForCell(grid, grid.getCell(i,j));
@@ -33,6 +34,9 @@ public class SudokuUtils {
     */
     private static void findMiniumsForCell(SudokuGrid grid, Cell cell) {
         cell.getMiniums().clearAllMiniums();
+        if(!cell.isEmpty()){
+            return;
+        }
         ArrayList<Integer> validVals = getValidCandidates(grid, cell);
 
         for(int i=0; i<validVals.size(); i++){
@@ -59,6 +63,21 @@ public class SudokuUtils {
         }
 
         return ints;
+    }
+
+    /*
+    Get empty cells of a specific type of unit in which the given cell belongs
+    */
+    static ArrayList<Cell> getEmptyUnitCells(SudokuGrid grid, int row, int column, UnitType unitType){
+        ArrayList<Cell> rv = getAllUnitCells(grid, row, column, unitType);
+        for(int i=0; i<rv.size(); i++){
+            if (!rv.get(i).isEmpty()){
+                rv.remove(i);
+                i--;
+            }
+        }
+
+        return rv;
     }
 
     /*

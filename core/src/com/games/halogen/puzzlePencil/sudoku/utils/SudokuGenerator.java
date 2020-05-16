@@ -8,19 +8,30 @@ import java.util.Collections;
 import java.util.Random;
 
 public class SudokuGenerator {
-    private static final Random random = new Random(1);
+    public static boolean highestLevelUsed;
+    private static Random random;
 
     //prevent instantiation
     private SudokuGenerator(){}
 
     public static void generate(SudokuGrid grid) {
-        grid.clearAllCells();
-        if (!generateFilledGrid(grid)) {
-            throw new RuntimeException("unable to fill grid, generation algo error");
-        }
-        randomlyRemoveNumbers(grid);
+        highestLevelUsed = false;
+        for(int randSeed = 12; randSeed<100000; randSeed++){
+            random = new Random(randSeed);
+            grid.clearAllCells();
+            if (!generateFilledGrid(grid)) {
+                throw new RuntimeException("unable to fill grid, possible algo error");
+            }
 
-        SudokuUtils.findMiniums(grid);
+            randomlyRemoveNumbers(grid);
+
+            SudokuUtils.findMiniums(grid);
+
+            if(highestLevelUsed){
+                System.out.println("generated at seed : " + randSeed);
+                break;
+            }
+        }
     }
 
     private static boolean generateFilledGrid(SudokuGrid grid) {

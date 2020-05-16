@@ -68,7 +68,7 @@ public class Miniums extends SudokuObject {
         return nums.get(i);
     }
 
-    private void remove(Integer i) {
+    public void remove(Integer i) {
         if(i < 1 || i > getCallbacks().getData().numRows){
             throw new RuntimeException("Miniums value out of range:" + i);
         }
@@ -127,5 +127,9 @@ public class Miniums extends SudokuObject {
 
     public boolean hasNum(Integer i) {
         return nums.contains(i);
+    }
+
+    public void print() {
+        System.out.println(nums);
     }
 }

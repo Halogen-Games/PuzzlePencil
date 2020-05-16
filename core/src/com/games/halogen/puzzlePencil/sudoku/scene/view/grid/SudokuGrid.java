@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 public class SudokuGrid extends SudokuObject {
     private int numBlocks;
-    private int level;
 
     private Cell activeCell;
     private int emptyCells;
@@ -18,9 +17,8 @@ public class SudokuGrid extends SudokuObject {
     private ArrayList<ArrayList<Cell>> cells;
     private ArrayList<ArrayList<Cell>> tempCells;
 
-    public SudokuGrid(int numBlocks, int level) {
+    public SudokuGrid(int numBlocks) {
         this.numBlocks = numBlocks;
-        this.level = level;
     }
 
     @Override
@@ -69,7 +67,7 @@ public class SudokuGrid extends SudokuObject {
     public void recreateGrid() {
         SudokuGenerator.generate(this);
         freezeFilledCells();
-        clearAllMiniums();
+//        clearAllMiniums();
         emptyCells = getEmptyCellCount();
     }
 
@@ -82,6 +80,8 @@ public class SudokuGrid extends SudokuObject {
                 }
             }
         }
+
+        System.out.println(rv);
 
         return rv;
     }
@@ -153,7 +153,7 @@ public class SudokuGrid extends SudokuObject {
     }
 
     public int getLevel() {
-        return this.level;
+        return getCallbacks().getData().level;
     }
 
     public int getNumRows() {
@@ -186,6 +186,8 @@ public class SudokuGrid extends SudokuObject {
         }
 
         SudokuUtils.updateCellValidityOnUpdate(this, activeCell);
+
+        SudokuUtils.findMiniums(this);
 
         getCallbacks().nextButtonRevealed(emptyCells == 0 && getInvalidCellCount() == 0);
     }

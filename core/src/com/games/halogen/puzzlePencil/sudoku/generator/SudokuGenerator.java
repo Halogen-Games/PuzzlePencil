@@ -1,7 +1,7 @@
-package com.games.halogen.puzzlePencil.sudoku.utils;
+package com.games.halogen.puzzlePencil.sudoku.generator;
 
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,8 +16,9 @@ public class SudokuGenerator {
 
     public static void generate(SudokuGrid grid) {
         highestLevelUsed = false;
-        for(int randSeed = 12; randSeed<100000; randSeed++){
+        for(int randSeed = 13; randSeed<100000; randSeed++){
             random = new Random(randSeed);
+            System.out.println("trying generation at : " + randSeed);
             grid.clearAllCells();
             if (!generateFilledGrid(grid)) {
                 throw new RuntimeException("unable to fill grid, possible algo error");
@@ -32,6 +33,8 @@ public class SudokuGenerator {
                 break;
             }
         }
+
+        grid.clearAllMiniums();
     }
 
     private static boolean generateFilledGrid(SudokuGrid grid) {
@@ -91,7 +94,7 @@ public class SudokuGenerator {
 
         grid.saveState();
         cell.setEmpty();
-        SudokuSolver.solveGridCell(grid, cell);
+        SudokuSolver.solveGridCell(grid, cell, grid.getLevel());
 
         int newVal = cell.getValue();
 

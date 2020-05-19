@@ -1,10 +1,9 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.view.ui;
+package com.games.halogen.puzzlePencil.sudoku.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.Viewport;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.general.SudokuTextButton;
-import com.games.halogen.puzzlePencil.sudoku.scene.world.SudokuLayoutManager;
+import com.games.halogen.puzzlePencil.sudoku.view.ui.general.SudokuTextButton;
+import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
 
 public class NextButton extends SudokuTextButton {
 

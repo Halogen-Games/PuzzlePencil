@@ -1,10 +1,10 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.view.grid;
+package com.games.halogen.puzzlePencil.sudoku.view.grid;
 
 import com.badlogic.gdx.Gdx;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
-import com.games.halogen.puzzlePencil.sudoku.scene.world.SudokuLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.utils.SudokuGenerator;
-import com.games.halogen.puzzlePencil.sudoku.utils.SudokuUtils;
+import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
+import com.games.halogen.puzzlePencil.sudoku.generator.SudokuGenerator;
+import com.games.halogen.puzzlePencil.sudoku.generator.SudokuUtils;
 
 import java.util.ArrayList;
 
@@ -34,7 +34,7 @@ public class SudokuGrid extends SudokuObject {
 
     private void setupGrid() {
         createCells();
-        addChildObject(new SudokuLines(), true);
+        addChildObject(new com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuLines(), true);
     }
 
     private void createCells() {
@@ -67,7 +67,6 @@ public class SudokuGrid extends SudokuObject {
     public void recreateGrid() {
         SudokuGenerator.generate(this);
         freezeFilledCells();
-//        clearAllMiniums();
         emptyCells = getEmptyCellCount();
     }
 
@@ -99,7 +98,7 @@ public class SudokuGrid extends SudokuObject {
         }
     }
 
-    private void clearAllMiniums() {
+    public void clearAllMiniums() {
         for(int i=0;i<cells.size();i++){
             for(int j=0; j<cells.get(0).size(); j++){
                 getCell(i, j).getMiniums().clearAllMiniums();
@@ -141,6 +140,11 @@ public class SudokuGrid extends SudokuObject {
     Setters and getters
      */
     public void setValue(int i, int j, int value) {
+        if(cells.get(i).get(j).isEmpty() && value != -1){
+            emptyCells--;
+        }else if(!cells.get(i).get(j).isEmpty() && value == -1){
+            emptyCells++;
+        }
         cells.get(i).get(j).setValue(value);
     }
 
@@ -224,5 +228,9 @@ public class SudokuGrid extends SudokuObject {
                 getCell(i,j).getMiniums().clearAllMiniums();
             }
         }
+    }
+
+    public boolean isFilled() {
+        return emptyCells == 0;
     }
 }

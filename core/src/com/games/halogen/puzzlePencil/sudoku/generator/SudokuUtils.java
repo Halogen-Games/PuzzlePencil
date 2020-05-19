@@ -1,14 +1,71 @@
-package com.games.halogen.puzzlePencil.sudoku.utils;
+package com.games.halogen.puzzlePencil.sudoku.generator;
 
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
+import com.games.halogen.gameEngine.utils.Pair;
+import com.games.halogen.gameEngine.utils.Pair.IntPair;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class SudokuUtils {
     //prevent instantiation
     private SudokuUtils(){}
+
+    static ArrayList<Cell> getCommonUnitCells(SudokuGrid grid, ArrayList<Cell> cellsWithI) {
+        if(cellsWithI.size()<2){
+            throw new RuntimeException("Need at least 2 elements to find common");
+        }
+
+        ArrayList<Cell> rv = new ArrayList<>();
+
+        int r = cellsWithI.get(0).getRow();
+        int c = cellsWithI.get(0).getColumn();
+        IntPair b = new IntPair(r/grid.getNumBlocks(), c/grid.getNumBlocks());
+
+        boolean rowCommon = true;
+        boolean colCommon = true;
+        boolean blockCommon = true;
+
+        //check if row is common
+        for(int i=1;i<cellsWithI.size();i++){
+            if(cellsWithI.get(i).getRow() != r){
+                rowCommon = false;
+                break;
+            }
+        }
+
+        //check if col is common
+        for(int i=1;i<cellsWithI.size();i++){
+            if(cellsWithI.get(i).getColumn() != c){
+                colCommon = false;
+                break;
+            }
+        }
+
+        //check if block is common
+        for(int i=1;i<cellsWithI.size();i++){
+            IntPair tempB = new IntPair(cellsWithI.get(i).getRow()/grid.getNumBlocks(), cellsWithI.get(i).getColumn()/grid.getNumBlocks());
+            if(!b.getFirst().equals(tempB.getFirst()) || !b.getSecond().equals(tempB.getSecond())){
+                blockCommon = false;
+                break;
+            }
+        }
+
+        if(rowCommon){
+            rv.addAll(getEmptyUnitCells(grid,r, c, UnitType.ROW));
+        }
+
+        if(colCommon){
+            rv.addAll(getEmptyUnitCells(grid,r, c, UnitType.COLUMN));
+        }
+
+        if(blockCommon){
+            rv.addAll(getEmptyUnitCells(grid,r, c, UnitType.BLOCK));
+        }
+
+
+        return rv;
+    }
 
     public enum UnitType{
         ROW,
@@ -83,7 +140,7 @@ public class SudokuUtils {
     /*
     Get cells of a specific type of unit in which the given cell belongs
     */
-    static ArrayList<Cell> getAllUnitCells(SudokuGrid grid, int row, int column, UnitType unitType){
+    private static ArrayList<Cell> getAllUnitCells(SudokuGrid grid, int row, int column, UnitType unitType){
         ArrayList<Cell> rv = new ArrayList<>();
 
         int gridSize = grid.getNumRows();

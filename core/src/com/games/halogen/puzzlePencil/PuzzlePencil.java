@@ -1,7 +1,7 @@
 package com.games.halogen.puzzlePencil;
 
 import com.games.halogen.gameEngine.HalogenGame;
-import com.games.halogen.puzzlePencil.sudoku.scene.SudokuScreen;
+import com.games.halogen.puzzlePencil.sudoku.SudokuScreen;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 
 public class PuzzlePencil extends HalogenGame {

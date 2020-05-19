@@ -1,13 +1,13 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.world;
+package com.games.halogen.puzzlePencil.sudoku.world;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.keypad.KeyPad;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.view.ui.keypad.KeyPad;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.Background;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.NextButton;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.view.ui.Background;
+import com.games.halogen.puzzlePencil.sudoku.view.ui.NextButton;
 
 public class SudokuWorld extends GameWorld {
     private Background bg;

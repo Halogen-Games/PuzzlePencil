@@ -1,7 +1,7 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.world;
+package com.games.halogen.puzzlePencil.sudoku.world;
 
 import com.games.halogen.gameEngine.scene.world.GameWorldCallbacks;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 
 public class SudokuWorldCallbacks extends GameWorldCallbacks {

@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.world;
+package com.games.halogen.puzzlePencil.sudoku.world;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
@@ -25,15 +25,15 @@ public class SudokuLayoutManager extends GameLayoutManager {
     public float nextButtTextHeightRatio = 0.75f;
 
     //colors
-    public Color bgColor = new Color().set(0x222222ff);
-    public Color gridLineColor = new Color().set(0x111111ff);
-    public Color deselectedCellColor = new Color().set(0xccccccff);
-    public Color buttonBGColor = new Color().set(0xccccccff);;
-    public Color selectedCellColor = new Color().set(0x999999ff);;
+    public Color bgColor = new Color().set(0x121212ff);
+    public Color gridLineColor = new Color().set(0x090909ff);
+    public Color selectedCellColor = new Color().set(0x333333ff);;
+    public Color deselectedCellColor = new Color().set(0x222222ff);
+    public Color buttonBGColor = new Color().set(0x222222ff);;
 
-    public Color editableFontColor = new Color().set(0x666666ff);
-    public Color fontColor = new Color().set(0x000000ff);
-    public Color errorFontColor = new Color(0xcc0000ff);
+    public Color editableFontColor = new Color().set(0xe9dec2ff);
+    public Color fontColor = new Color().set(0x7c735aff);
+    public Color errorFontColor = new Color().set(0xcf9889ff);
 
     public float getGridLineThickness(){
         return cellSize * cellMarginToSizeRatio * 3f;

@@ -1,10 +1,10 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.view.ui.general;
+package com.games.halogen.puzzlePencil.sudoku.view.ui.general;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.games.halogen.gameEngine.ui.GameTextButton;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
 
 public abstract class SudokuTextButton extends SudokuObject {
     private String text;
@@ -18,7 +18,7 @@ public abstract class SudokuTextButton extends SudokuObject {
     public void init() {
         TextButton.TextButtonStyle style = new TextButton.TextButtonStyle();
         style.font = getCallbacks().getDependencyInjector().getAssetManager().fontLabelStyle.font;
-        style.fontColor = getCallbacks().getLayoutManager().fontColor;
+        style.fontColor = getCallbacks().getLayoutManager().editableFontColor;
 
         Sprite upState = new Sprite(getCallbacks().getDependencyInjector().getAssetManager().getSquareRegion());
         upState.setColor(getCallbacks().getLayoutManager().buttonBGColor);

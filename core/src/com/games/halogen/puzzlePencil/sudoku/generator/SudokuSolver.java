@@ -1,35 +1,27 @@
-package com.games.halogen.puzzlePencil.sudoku.utils;
+package com.games.halogen.puzzlePencil.sudoku.generator;
 
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.Miniums;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.grid.SudokuGrid;
-import com.games.halogen.puzzlePencil.sudoku.utils.SudokuUtils.UnitType;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.Miniums;
+import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.generator.SudokuUtils.UnitType;
 
 import java.util.ArrayList;
 
 /**
- * -----Scanning Techniques-----
  * level 1 - Naked Singles
  * level 2 - Hidden Singles
- *
- * -----Pair Removal Techniques-----
  * level 3 -  Naked Pairs
- * level 4 - Hidden Pairs
- * Note: Can generalize to triples and quads (uninteresting?)
+ * level 4 - Singles Group: same digit twice, thrice in a single unit, can remove this Digit from their other common units.
+ * level 5 - Hidden Pairs
  *
- * -----lower level of X-Wing Techniques (2 length chain of singles)------
- *  Example(2-chain): same digit twice in a single unit, can remove this Digit from their other common units.
+ * ------------X-Wing---------------
+ * General Technique : (X,Y) -> A and Y share a unit
+ * A minium present only twice in units A and B in cells (P,Q) and (R,S)
+ * If (P,R) and (Q,S) || (P,S) and (Q,R), can remove this minium from these new common units
  *
- * -----X-Wing Like techniques (4 length chains of pairs)-----
- * General Technique :
- *      2 Singles in same unit(A), both pair up with another set of singles in units B and C.
- *      can remove all others of this single from A, B and C
- *      This is kind of a chaining with a chain of 4 cells. Cell 1 and 4 lie in A, Cell 2 in B and Cell 3 lies in C.
  * level 5 - A is a row or column, B and C are both either row or column
- * level 6 - A is a Block, B and C are same unit type
+ * level 6 - A is a Block, B and C are same unit types
  * level 7 - A is any unit, B and C are diff Units types
- *
- * -----Longer chains than X-Wing ( 6 length chains)-----
  */
 
 /*
@@ -37,70 +29,88 @@ todo: too much repetitive code, make better
  */
 class SudokuSolver {
     //prevent object instantiation
-    private SudokuSolver(){}
+    private SudokuSolver(){
+    }
 
     /*
-    Solves the grid completely
+    Solves the grid completely up to given level
      */
-
-    static void solveGrid(SudokuGrid grid){
+    static void solveGrid(SudokuGrid grid, int level){
         //todo: fill
+        solveGridCell(grid, null, level);
     }
 
     /*
     Solves the grid until the given cell is filled
      */
-    static void solveGridCell(SudokuGrid grid, Cell cell) {
+    static void solveGridCell(SudokuGrid grid, Cell cell, int level) {
         SudokuUtils.findMiniums(grid);
 
         boolean highestLevelUsed = false;
 
-        while(cell.isEmpty()) {
+        boolean loop = true;
+        while(loop) {
+            if(cell == null){
+                loop = !grid.isFilled();
+            }else{
+                loop = cell.isEmpty();
+            }
+
             //Level 1 - Naked Singles
             if (fillNakedSingles(grid)) {
                 SudokuUtils.findMiniums(grid);
-                if (grid.getLevel() == 1) {
+                if (level == 1) {
                     highestLevelUsed = true;
                 }
                 continue;
-            }else if (grid.getLevel() == 1) {
+            }else if (level == 1) {
                 break;
             }
 
             //Level 2 - Hidden Singles
             if (removeHiddenSingles(grid)) {
-                if (grid.getLevel() == 2) {
+                if (level == 2) {
                     highestLevelUsed = true;
                 }
                 continue;
-            }else if (grid.getLevel() == 2) {
+            }else if (level == 2) {
                 break;
             }
 
             //Level 3 - Naked Pairs
             if (removeNakedPairs(grid)) {
-                if (grid.getLevel() == 3) {
+                if (level == 3) {
                     highestLevelUsed = true;
                 }
                 continue;
-            }else if (grid.getLevel() == 3) {
+            }else if (level == 3) {
                 break;
             }
 
-            //Level 3 - Naked Pairs
-            if (removeHiddenPairs(grid)) {
-                if (grid.getLevel() == 4) {
+            //Level 4 - Chained Singles
+            if (removeChainedSingles(grid)) {
+                if (level == 4) {
                     highestLevelUsed = true;
                 }
                 continue;
-            }else if (grid.getLevel() == 4) {
+            }else if (level == 4) {
+                break;
+            }
+
+            //Level 5 - Hidden Pairs
+            if (removeHiddenPairs(grid)) {
+                if (level == 5) {
+                    highestLevelUsed = true;
+                }
+                continue;
+            }else if (level == 5) {
                 break;
             }
 
             break;
         }
 
-        if(highestLevelUsed && !cell.isEmpty()){
+        if(highestLevelUsed && cell!= null && !cell.isEmpty()){
             SudokuGenerator.highestLevelUsed = true;
         }
     }
@@ -256,6 +266,75 @@ class SudokuSolver {
             }
         }
 
+        return isRemoved;
+    }
+
+    private static boolean removeChainedSingles(SudokuGrid grid) {
+        int numBlocks = grid.getNumBlocks();
+        int numRows = grid.getNumRows();
+        boolean isRemoved = false;
+
+        //search all rows
+        for(int i=0;i<numRows;i++){
+            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, UnitType.ROW);
+            while(removeChainedSinglesInSet(grid, rowCells, numRows)){
+                isRemoved = true;
+            }
+        }
+
+        //search all columns
+        for(int i=0;i<numRows;i++){
+            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, UnitType.COLUMN);
+            while(removeChainedSinglesInSet(grid, colCells, numRows)){
+                isRemoved = true;
+            }
+        }
+
+        //search all blocks
+        for(int i=0;i<numRows;i++){
+            int row = ((i/numBlocks)*numBlocks)%numRows;
+            int column = (i*numBlocks)%numRows;
+            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, UnitType.BLOCK);
+            while(removeChainedSinglesInSet(grid, blockCells, numRows)){
+                isRemoved = true;
+            }
+        }
+        return isRemoved;
+    }
+
+    private static boolean removeChainedSinglesInSet(SudokuGrid grid, ArrayList<Cell> cells, int numRows) {
+        boolean isRemoved = false;
+        for(int i=1; i<=numRows;i++){
+            ArrayList<Cell> cellsWithI = new ArrayList<>();
+
+            for(Cell c: cells){
+                if(c.getMiniums().hasNum(i)){
+                    cellsWithI.add(c);
+                }
+            }
+
+            if(cellsWithI.size() < 2 || cellsWithI.size() > 3){
+                continue;
+            }
+
+            ArrayList<Cell> commonUnitCells = SudokuUtils.getCommonUnitCells(grid, cellsWithI);
+            int countRemoved = 0;
+            for(Cell c:commonUnitCells){
+                if(c.getMiniums().hasNum(i)) {
+                    c.getMiniums().remove(i);
+                    countRemoved++;
+                }
+            }
+
+            for(Cell c:cellsWithI){
+                c.getMiniums().add(i);
+                countRemoved--;
+            }
+
+            if(countRemoved > 0){
+                isRemoved = true;
+            }
+        }
         return isRemoved;
     }
 

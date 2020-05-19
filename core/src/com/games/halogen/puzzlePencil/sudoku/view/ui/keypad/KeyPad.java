@@ -1,9 +1,9 @@
-package com.games.halogen.puzzlePencil.sudoku.scene.view.ui.keypad;
+package com.games.halogen.puzzlePencil.sudoku.view.ui.keypad;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.SudokuObject;
-import com.games.halogen.puzzlePencil.sudoku.scene.view.ui.general.SudokuTextButton;
+import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.view.ui.general.SudokuTextButton;
 
 import java.util.ArrayList;
 

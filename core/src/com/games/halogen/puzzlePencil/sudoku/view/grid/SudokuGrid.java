@@ -3,8 +3,8 @@ package com.games.halogen.puzzlePencil.sudoku.view.grid;
 import com.badlogic.gdx.Gdx;
 import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.generator.SudokuGenerator;
-import com.games.halogen.puzzlePencil.sudoku.generator.SudokuUtils;
+import com.games.halogen.puzzlePencil.sudoku.viewGenerator.SudokuGenerator;
+import com.games.halogen.puzzlePencil.sudoku.viewGenerator.SudokuUtils;
 
 import java.util.ArrayList;
 

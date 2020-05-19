@@ -1,9 +1,9 @@
-package com.games.halogen.puzzlePencil.sudoku.generator;
+package com.games.halogen.puzzlePencil.sudoku.viewGenerator;
 
+import com.games.halogen.puzzlePencil.sudoku.generator.model.HouseType;
 import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
 import com.games.halogen.puzzlePencil.sudoku.view.grid.Miniums;
 import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
-import com.games.halogen.puzzlePencil.sudoku.generator.SudokuUtils.UnitType;
 
 import java.util.ArrayList;
 
@@ -145,7 +145,7 @@ class SudokuSolver {
 
         //search all rows
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, UnitType.ROW);
+            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, HouseType.ROW);
             while(removeHiddenSinglesInSet(rowCells, numRows)){
                 isRemoved = true;
             }
@@ -153,7 +153,7 @@ class SudokuSolver {
 
         //search all columns
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, UnitType.COLUMN);
+            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, HouseType.COLUMN);
             while(removeHiddenSinglesInSet(colCells, numRows)){
                 isRemoved = true;
             }
@@ -163,7 +163,7 @@ class SudokuSolver {
         for(int i=0;i<numRows;i++){
             int row = ((i/numBlocks)*numBlocks)%numRows;
             int column = (i*numBlocks)%numRows;
-            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, UnitType.BLOCK);
+            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, HouseType.BLOCK);
             while(removeHiddenSinglesInSet(blockCells, numRows)){
                 isRemoved = true;
             }
@@ -208,7 +208,7 @@ class SudokuSolver {
 
         //search all rows
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, UnitType.ROW);
+            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, HouseType.ROW);
             while(removeNakedPairsInSet(rowCells, numRows)){
                 isRemoved = true;
             }
@@ -216,7 +216,7 @@ class SudokuSolver {
 
         //search all columns
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, UnitType.COLUMN);
+            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, HouseType.COLUMN);
             while(removeNakedPairsInSet(colCells, numRows)){
                 isRemoved = true;
             }
@@ -226,7 +226,7 @@ class SudokuSolver {
         for(int i=0;i<numRows;i++){
             int row = ((i/numBlocks)*numBlocks)%numRows;
             int column = (i*numBlocks)%numRows;
-            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, UnitType.BLOCK);
+            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, HouseType.BLOCK);
             while(removeNakedPairsInSet(blockCells, numRows)){
                 isRemoved = true;
             }
@@ -276,7 +276,7 @@ class SudokuSolver {
 
         //search all rows
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, UnitType.ROW);
+            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, HouseType.ROW);
             while(removeChainedSinglesInSet(grid, rowCells, numRows)){
                 isRemoved = true;
             }
@@ -284,7 +284,7 @@ class SudokuSolver {
 
         //search all columns
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, UnitType.COLUMN);
+            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, HouseType.COLUMN);
             while(removeChainedSinglesInSet(grid, colCells, numRows)){
                 isRemoved = true;
             }
@@ -294,7 +294,7 @@ class SudokuSolver {
         for(int i=0;i<numRows;i++){
             int row = ((i/numBlocks)*numBlocks)%numRows;
             int column = (i*numBlocks)%numRows;
-            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, UnitType.BLOCK);
+            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, HouseType.BLOCK);
             while(removeChainedSinglesInSet(grid, blockCells, numRows)){
                 isRemoved = true;
             }
@@ -345,7 +345,7 @@ class SudokuSolver {
 
         //search all rows
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, UnitType.ROW);
+            ArrayList<Cell> rowCells = SudokuUtils.getEmptyUnitCells(grid, i, 0, HouseType.ROW);
             while(removeHiddenPairsInSet(rowCells, numRows)){
                 isRemoved = true;
             }
@@ -353,7 +353,7 @@ class SudokuSolver {
 
         //search all columns
         for(int i=0;i<numRows;i++){
-            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, UnitType.COLUMN);
+            ArrayList<Cell> colCells = SudokuUtils.getEmptyUnitCells(grid, 0, i, HouseType.COLUMN);
             while(removeHiddenPairsInSet(colCells, numRows)){
                 isRemoved = true;
             }
@@ -363,7 +363,7 @@ class SudokuSolver {
         for(int i=0;i<numRows;i++){
             int row = ((i/numBlocks)*numBlocks)%numRows;
             int column = (i*numBlocks)%numRows;
-            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, UnitType.BLOCK);
+            ArrayList<Cell> blockCells = SudokuUtils.getEmptyUnitCells(grid, row, column, HouseType.BLOCK);
             while(removeHiddenPairsInSet(blockCells, numRows)){
                 isRemoved = true;
             }

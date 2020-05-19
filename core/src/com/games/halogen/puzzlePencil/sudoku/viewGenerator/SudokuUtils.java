@@ -1,7 +1,7 @@
-package com.games.halogen.puzzlePencil.sudoku.generator;
+package com.games.halogen.puzzlePencil.sudoku.viewGenerator;
 
-import com.games.halogen.gameEngine.utils.Pair;
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
+import com.games.halogen.puzzlePencil.sudoku.generator.model.HouseType;
 import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
 import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
 
@@ -52,25 +52,19 @@ public class SudokuUtils {
         }
 
         if(rowCommon){
-            rv.addAll(getEmptyUnitCells(grid,r, c, UnitType.ROW));
+            rv.addAll(getEmptyUnitCells(grid,r, c, HouseType.ROW));
         }
 
         if(colCommon){
-            rv.addAll(getEmptyUnitCells(grid,r, c, UnitType.COLUMN));
+            rv.addAll(getEmptyUnitCells(grid,r, c, HouseType.COLUMN));
         }
 
         if(blockCommon){
-            rv.addAll(getEmptyUnitCells(grid,r, c, UnitType.BLOCK));
+            rv.addAll(getEmptyUnitCells(grid,r, c, HouseType.BLOCK));
         }
 
 
         return rv;
-    }
-
-    public enum UnitType{
-        ROW,
-        COLUMN,
-        BLOCK
     }
 
 
@@ -111,7 +105,7 @@ public class SudokuUtils {
             ints.add(i);
         }
 
-        for(UnitType u:UnitType.values()) {
+        for(HouseType u: HouseType.values()) {
             for (Cell c : getAllUnitCells(grid, cell.getRow(), cell.getColumn(), u)) {
                 if (!c.isEmpty()) {
                     ints.remove((Integer)c.getValue());
@@ -125,7 +119,7 @@ public class SudokuUtils {
     /*
     Get empty cells of a specific type of unit in which the given cell belongs
     */
-    static ArrayList<Cell> getEmptyUnitCells(SudokuGrid grid, int row, int column, UnitType unitType){
+    static ArrayList<Cell> getEmptyUnitCells(SudokuGrid grid, int row, int column, HouseType unitType){
         ArrayList<Cell> rv = getAllUnitCells(grid, row, column, unitType);
         for(int i=0; i<rv.size(); i++){
             if (!rv.get(i).isEmpty()){
@@ -140,7 +134,7 @@ public class SudokuUtils {
     /*
     Get cells of a specific type of unit in which the given cell belongs
     */
-    private static ArrayList<Cell> getAllUnitCells(SudokuGrid grid, int row, int column, UnitType unitType){
+    private static ArrayList<Cell> getAllUnitCells(SudokuGrid grid, int row, int column, HouseType unitType){
         ArrayList<Cell> rv = new ArrayList<>();
 
         int gridSize = grid.getNumRows();
@@ -182,7 +176,7 @@ public class SudokuUtils {
 
         //check all the three units one by one
         boolean isValid = true;
-        for(UnitType u:UnitType.values()){
+        for(HouseType u: HouseType.values()){
             for (Cell c: getAllUnitCells(grid, cell.getRow(), cell.getColumn(), u)) {
                 if (!c.isEmpty()) {
                     if(c != cell && c.getValue() == cellVal && c.getValue() != -1){

@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.generator;
+package com.games.halogen.puzzlePencil.sudoku.viewGenerator;
 
 import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
 import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;

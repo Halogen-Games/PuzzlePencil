@@ -4,12 +4,18 @@ import java.util.ArrayList;
 
 public class House {
     private HouseType type;
+    private ArrayList<Cell> cells;
 
+    /*
+    Returns cells in this house which have the given pencil mark
+     */
     public ArrayList<Cell> getCellsWithMark(int mark) {
-        return null;
+        //todo fill
+        return new ArrayList<>();
     }
 
-    public ArrayList<Cell> getCellsWithMark(int mark, int count) {
-        return null;
+    public ArrayList<Cell> getCellsWithMarkCount(int i) {
+        //todo fill
+        return new ArrayList<>();
     }
 }

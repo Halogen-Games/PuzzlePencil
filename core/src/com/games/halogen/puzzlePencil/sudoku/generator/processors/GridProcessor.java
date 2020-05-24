@@ -10,8 +10,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 public abstract class GridProcessor {
-    public abstract ArrayList<HouseSubset> find(Grid grid);
-    public abstract void process(ArrayList<HouseSubset> data);
+    public abstract void find(Grid grid);
+    public abstract void process(Grid grid);
+
+    private ArrayList<HouseSubset> targetSubsets;
+    private ArrayList<HouseSubset> affectedSubsets;
+
+    public GridProcessor(){
+        this.targetSubsets = new ArrayList<>();
+        this.affectedSubsets = new ArrayList<>();
+    }
 
     public ArrayList<House> getGridHouses(Grid grid){
         ArrayList<House> rows = grid.getHouses(HouseType.ROW);
@@ -27,6 +35,11 @@ public abstract class GridProcessor {
     }
 
     public ArrayList<Integer> getRandomizedIndices(Grid grid){
-        return null;
+        //todo fill
+        return new ArrayList<>();
+    }
+
+    public ArrayList<HouseSubset> getTargetSubsets(){
+        return targetSubsets;
     }
 }

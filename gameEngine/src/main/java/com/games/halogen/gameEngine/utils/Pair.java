@@ -2,6 +2,7 @@ package com.games.halogen.gameEngine.utils;
 
 public class Pair<T, U> {
 
+    public static Object IntPair;
     private T first;
     private U second;
 

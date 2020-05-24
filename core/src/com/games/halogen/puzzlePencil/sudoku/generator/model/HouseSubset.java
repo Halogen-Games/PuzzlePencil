@@ -1,22 +1,27 @@
 package com.games.halogen.puzzlePencil.sudoku.generator.model;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 
 public class HouseSubset {
     private House house;
-    private ArrayList<Cell> cells;
+    private ArrayList<Cell> specialCells;
+    private PenMarks specialMarks;
 
-    public HouseSubset(House house, ArrayList<Cell> cells){
+    public HouseSubset(House house, ArrayList<Cell> specialCells, PenMarks specialMarks){
         this.house = house;
-        this.cells = cells;
+        this.specialCells = specialCells;
+        this.specialMarks = specialMarks;
     }
 
-    public Cell get(int i){
-        return cells.get(i);
+    public Cell getCell(int i){
+        return specialCells.get(i);
     }
 
-    public int size(){
-        return cells.size();
+    public int cellCount(){
+        return specialCells.size();
+    }
+
+    public PenMarks getSpecialMarks() {
+        return specialMarks;
     }
 }

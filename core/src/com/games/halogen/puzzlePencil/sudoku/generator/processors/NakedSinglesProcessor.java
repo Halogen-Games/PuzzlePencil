@@ -8,26 +8,42 @@ import com.games.halogen.puzzlePencil.sudoku.generator.model.HouseSubset;
 import java.util.ArrayList;
 
 public class NakedSinglesProcessor extends GridProcessor {
+    /*
+    Finds a house which has only one pen mark
+     */
     @Override
-    public ArrayList<HouseSubset> find(Grid grid) {
+    public void find(Grid grid) {
+        this.getTargetSubsets().clear();
+
         for(House h:getGridHouses(grid)){
-            for(Integer i:getRandomizedIndices(grid)){
-                ArrayList<Cell> cells = h.getCellsWithMark(i, 1);
-                ArrayList<HouseSubset> hs = new ArrayList<>();
-                hs.add(new HouseSubset(h, cells));
-                return hs;
+            //find cells of h with only 1 pencil mark
+            ArrayList<Cell> cells = h.getCellsWithMarkCount(1);
+
+            //if only one cell has i mark, it is a hidden single
+            if(cells.size() > 0) {
+                this.getTargetSubsets().add(new HouseSubset(h, cells, cells.get(0).getPenMarks()));
+                return;
             }
         }
-
-        return null;
     }
 
     @Override
-    public void process(ArrayList<HouseSubset> data) {
-        if(data.size() != 1 || data.get(0).size() != 1){
-            throw new RuntimeException("Malformed data for Naked Single processor");
+    public void process(Grid grid) {
+        ArrayList<HouseSubset> data = this.getTargetSubsets();
+        if(data.size() != 1){
+            throw new RuntimeException("A naked single requires only one house subset, found " + data.size());
         }
-        Cell c = data.get(0).get(0);
-        c.setValue(c.getPenMarks().get(0));
+
+        HouseSubset hs = data.get(0);
+        if(hs.cellCount() != 1){
+            throw new RuntimeException("A naked single should have only one cell in its house subset to be processed, found " + hs.cellCount());
+        }
+
+        Cell c = hs.getCell(0);
+        if (c.getPenMarks().getMarksCount() != 1){
+            throw new RuntimeException("A naked single should have only one penMark, found " + c.getPenMarks().getMarksCount());
+        }
+
+        grid.setCellValue(c.getCoordinates().getFirst(), c.getCoordinates().getSecond(),c.getPenMarks().getMark(0));
     }
 }

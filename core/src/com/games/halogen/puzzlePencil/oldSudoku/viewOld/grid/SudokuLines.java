@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.view.grid;
+package com.games.halogen.puzzlePencil.sudoku.viewOld.grid;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
 
 class SudokuLines extends SudokuObject {
     private SudokuLayoutManager lm;

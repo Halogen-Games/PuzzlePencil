@@ -1,10 +1,10 @@
-package com.games.halogen.puzzlePencil.sudoku.view.ui.general;
+package com.games.halogen.puzzlePencil.sudoku.viewOld.ui.general;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
 import com.games.halogen.gameEngine.ui.GameTextButton;
-import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
 
 public abstract class SudokuTextButton extends SudokuObject {
     private String text;

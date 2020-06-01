@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.view.ui.general;
+package com.games.halogen.puzzlePencil.sudoku.viewOld.ui.general;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;

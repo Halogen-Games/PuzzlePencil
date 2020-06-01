@@ -1,7 +1,7 @@
-package com.games.halogen.puzzlePencil.sudoku.view.grid;
+package com.games.halogen.puzzlePencil.sudoku.viewOld.grid;
 
 import com.badlogic.gdx.Gdx;
-import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
 import com.games.halogen.puzzlePencil.sudoku.viewGenerator.SudokuGenerator;
 import com.games.halogen.puzzlePencil.sudoku.viewGenerator.SudokuUtils;
@@ -34,7 +34,7 @@ public class SudokuGrid extends SudokuObject {
 
     private void setupGrid() {
         createCells();
-        addChildObject(new com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuLines(), true);
+        addChildObject(new com.games.halogen.puzzlePencil.sudoku.viewOld.grid.SudokuLines(), true);
     }
 
     private void createCells() {

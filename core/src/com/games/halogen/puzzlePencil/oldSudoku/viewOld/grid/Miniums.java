@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.view.grid;
+package com.games.halogen.puzzlePencil.sudoku.viewOld.grid;
 
 import com.badlogic.gdx.math.Vector2;
-import com.games.halogen.puzzlePencil.sudoku.view.SudokuObject;
-import com.games.halogen.puzzlePencil.sudoku.view.ui.general.TextLabel;
+import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.viewOld.ui.general.TextLabel;
 
 import java.util.ArrayList;
 

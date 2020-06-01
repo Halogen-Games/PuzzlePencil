@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.generator.model;
+package com.games.halogen.puzzlePencil.sudoku.model;
 
 public enum HouseType {
     ROW,

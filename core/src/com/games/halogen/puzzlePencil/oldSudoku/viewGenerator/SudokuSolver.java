@@ -1,9 +1,9 @@
-package com.games.halogen.puzzlePencil.sudoku.viewGenerator;
+package com.games.halogen.puzzlePencil.oldSudoku.viewGenerator;
 
 import com.games.halogen.puzzlePencil.sudoku.model.HouseType;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.grid.Miniums;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.Cell;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.Miniums;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.SudokuGrid;
 
 import java.util.ArrayList;
 

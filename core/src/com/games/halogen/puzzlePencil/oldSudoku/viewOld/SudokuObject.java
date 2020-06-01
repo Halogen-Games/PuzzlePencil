@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.viewOld;
+package com.games.halogen.puzzlePencil.oldSudoku.viewOld;
 
 import com.games.halogen.gameEngine.scene.view.GameObject;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuWorld;

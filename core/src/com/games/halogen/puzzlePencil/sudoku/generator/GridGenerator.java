@@ -1,8 +1,8 @@
 package com.games.halogen.puzzlePencil.sudoku.generator;
 
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
-import com.games.halogen.puzzlePencil.sudoku.generator.model.Grid;
-import com.games.halogen.puzzlePencil.sudoku.generator.model.PenMarks;
+import com.games.halogen.puzzlePencil.sudoku.model.grid.Grid;
+import com.games.halogen.puzzlePencil.sudoku.model.PenMarks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -69,7 +69,7 @@ public class GridGenerator {
 
     //get valid numbers that can be filled in the grid at specific coordinates
     private static ArrayList<Integer> getValidFills(Grid grid, IntPair coordinates){
-        PenMarks pm = grid.getPenMarks(coordinates.getFirst(), coordinates.getSecond());
+        PenMarks pm = grid.getCell(coordinates.getFirst(), coordinates.getSecond()).getPenMarks();
         ArrayList<Integer> ints = new ArrayList<>();
         for(int i = 0; i<pm.getMarksCount(); i++){
             ints.add(pm.getMark(i));

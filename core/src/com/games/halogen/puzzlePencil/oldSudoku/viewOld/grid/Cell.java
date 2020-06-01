@@ -1,12 +1,12 @@
-package com.games.halogen.puzzlePencil.sudoku.viewOld.grid;
+package com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.ui.general.TextLabel;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.SudokuObject;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.general.TextLabel;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
 
 public class Cell extends SudokuObject {

@@ -1,6 +1,6 @@
-package com.games.halogen.puzzlePencil.sudoku.viewOld.ui.keypad;
+package com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.keypad;
 
-import com.games.halogen.puzzlePencil.sudoku.viewOld.ui.general.SudokuTextButton;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.general.SudokuTextButton;
 
 public abstract class NumButton extends SudokuTextButton {
     public NumButton(String text) {

@@ -1,16 +1,15 @@
 package com.games.halogen.puzzlePencil.sudoku.model;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 public class PenMarks {
     private ArrayList<Integer> marks;
 
-    public PenMarks(int... a){
+    public PenMarks(Integer... a){
         marks = new ArrayList<>();
-        for(int i:a){
-            marks.add(i);
-        }
+        marks.addAll(Arrays.asList(a));
 
         Collections.sort(marks);
     }
@@ -21,5 +20,21 @@ public class PenMarks {
 
     public int getMarksCount() {
         return marks.size();
+    }
+
+    public void addMark(Integer num) {
+        if(!marks.contains(num)){
+            marks.add(num);
+        }
+
+        Collections.sort(marks);
+    }
+
+    public void removeAllMarks() {
+        marks.clear();
+    }
+
+    public void removeMark(Integer num) {
+        marks.remove(num);
     }
 }

@@ -1,7 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.model;
+package com.games.halogen.puzzlePencil.sudoku.model.grid;
 
-import com.games.halogen.gameEngine.utils.Pair;
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
+import com.games.halogen.puzzlePencil.sudoku.model.House;
+import com.games.halogen.puzzlePencil.sudoku.model.HouseType;
 
 import java.util.ArrayList;
 
@@ -39,7 +40,9 @@ public class Grid {
         for(int row=0; row<dimensions; row++){
             House h = new House(HouseType.ROW);
             for(int col=0; col<dimensions; col++){
-                h.addCell(getCell(row, col));
+                Cell c = getCell(row, col);
+                h.addCell(c);
+                c.addHouse(h);
             }
             houses.add(h);
         }
@@ -48,7 +51,9 @@ public class Grid {
         for(int col=0; col<dimensions; col++){
             House h = new House(HouseType.COLUMN);
             for(int row=0; row<dimensions; row++){
-                h.addCell(getCell(row, col));
+                Cell c = getCell(row, col);
+                h.addCell(c);
+                c.addHouse(h);
             }
             houses.add(h);
         }
@@ -61,7 +66,9 @@ public class Grid {
                 House h = new House(HouseType.BLOCK);
                 for(int i=0; i<houseWidth; i++){
                     for(int j=0; j<houseWidth; j++){
-                        h.addCell(getCell(br*houseWidth+i, bc*houseWidth+j));
+                        Cell c = getCell(br*houseWidth+i, bc*houseWidth+j);
+                        h.addCell(c);
+                        c.addHouse(h);
                     }
                 }
 
@@ -85,27 +92,49 @@ public class Grid {
         return rv;
     }
 
-    /*
-    Calculates and returns penMarks for given cell
-     */
-    public PenMarks getPenMarks(int i, int j) {
-        return getCell(i,j).getPenMarks();
-    }
-
     public void setCellValue(Integer r, Integer c, Integer num) {
-        getCell(r, c).setValue(num);
+        if(num < 1 || num > dimensions){
+            throw new RuntimeException("Can;t set cell Value. Value out of dimensions : " + num);
+        }
+        Cell cell = getCell(r, c);
+        cell.setValue(num);
+        cell.getPenMarks().removeAllMarks();
 
+        for(House h: cell.getHouses()){
+            h.removePencilMarkFromCells(num);
+        }
     }
 
     public void clearCellValue(Integer r, Integer c){
-        getCell(r, c).clearValue();
+        Cell cell = getCell(r, c);
+
+        cell.clearValue();
+        for(House h: cell.getHouses()){
+            for(Cell c1: h.getCells()){
+                updateCellMarks(c1);
+            }
+        }
     }
 
     public void clearAllCells() {
-        //todo fill
+        for(Cell c:cells){
+            c.clearValue();
+        }
     }
 
-    private Cell getCell(int r, int c){
+    public Cell getCell(int r, int c){
         return cells.get(r*dimensions + c);
+    }
+
+    private void updateCellMarks(Cell c){
+        for(int  i=1; i<=getDimension(); i++){
+            c.getPenMarks().addMark(i);
+            for(House h: c.getHouses()){
+                if(h.hasCellWithNum(i)){
+                    c.getPenMarks().removeMark(i);
+                    break;
+                }
+            }
+        }
     }
 }

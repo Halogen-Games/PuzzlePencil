@@ -1,9 +1,9 @@
 package com.games.halogen.puzzlePencil.sudoku.generator.processors;
 
-import com.games.halogen.puzzlePencil.sudoku.generator.model.Cell;
-import com.games.halogen.puzzlePencil.sudoku.generator.model.Grid;
-import com.games.halogen.puzzlePencil.sudoku.generator.model.House;
-import com.games.halogen.puzzlePencil.sudoku.generator.model.HouseSubset;
+import com.games.halogen.puzzlePencil.sudoku.model.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.model.grid.Grid;
+import com.games.halogen.puzzlePencil.sudoku.model.House;
+import com.games.halogen.puzzlePencil.sudoku.model.HouseSubset;
 
 import java.util.ArrayList;
 

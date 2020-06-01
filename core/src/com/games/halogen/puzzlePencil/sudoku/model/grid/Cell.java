@@ -1,6 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.model;
+package com.games.halogen.puzzlePencil.sudoku.model.grid;
 
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
+import com.games.halogen.puzzlePencil.sudoku.model.House;
+import com.games.halogen.puzzlePencil.sudoku.model.PenMarks;
 
 import java.util.ArrayList;
 
@@ -11,7 +13,7 @@ Pencil marks are updated on cell value update
 public class Cell {
     private int dimensions;
 
-    private int num;
+    private Integer num;
     private ArrayList<House> houses;
     private IntPair coordinates;
 
@@ -23,6 +25,8 @@ public class Cell {
         this.dimensions = dimensions;
 
         setupPenMarks();
+
+        houses = new ArrayList<>();
     }
 
     private void setupPenMarks() {
@@ -47,7 +51,7 @@ public class Cell {
     }
 
     /*
-    IMPORTANT: This should only be called from grid
+    Below functions should only be callable from Grid
      */
     void setValue(Integer num) {
         this.num = num;
@@ -55,5 +59,17 @@ public class Cell {
 
     void clearValue() {
         this.num = -1;
+    }
+
+    void addHouse(House h){
+        houses.add(h);
+    }
+
+    public ArrayList<House> getHouses() {
+        return houses;
+    }
+
+    public int getValue() {
+        return num;
     }
 }

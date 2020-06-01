@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.viewOld.grid;
+package com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.SudokuObject;
 
 class SudokuLines extends SudokuObject {
     private SudokuLayoutManager lm;
@@ -28,7 +28,7 @@ class SudokuLines extends SudokuObject {
         this.addActor(topLine);
 
         //internal vertical lines
-        int numBlocks = getCallbacks().getData().numBlocks;
+        int numBlocks = getCallbacks().getData().gridDimensions;
         for(int i=1;i<numBlocks;i++){
             Image line = getLineImage();
             line.moveBy(i*lm.gridSize/numBlocks, 0);

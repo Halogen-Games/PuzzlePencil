@@ -1,5 +1,7 @@
 package com.games.halogen.puzzlePencil.sudoku.model;
 
+import com.games.halogen.puzzlePencil.sudoku.model.grid.Grid;
+
 public enum HouseType {
     ROW,
     COLUMN,

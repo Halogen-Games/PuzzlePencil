@@ -1,5 +1,7 @@
 package com.games.halogen.puzzlePencil.sudoku.model;
 
+import com.games.halogen.puzzlePencil.sudoku.model.grid.Cell;
+
 import java.util.ArrayList;
 
 public class HouseSubset {

@@ -2,12 +2,12 @@ package com.games.halogen.puzzlePencil.sudoku.world;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
-import com.games.halogen.puzzlePencil.sudoku.view.grid.Cell;
-import com.games.halogen.puzzlePencil.sudoku.view.ui.keypad.KeyPad;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.Cell;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.keypad.KeyPad;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.sudoku.view.grid.SudokuGrid;
-import com.games.halogen.puzzlePencil.sudoku.view.ui.Background;
-import com.games.halogen.puzzlePencil.sudoku.view.ui.NextButton;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.Background;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.NextButton;
 
 public class SudokuWorld extends GameWorld {
     private Background bg;
@@ -21,7 +21,7 @@ public class SudokuWorld extends GameWorld {
         bg = new Background();
         this.addGameObject(bg, true);
 
-        sudokuGrid = new SudokuGrid(getData().numBlocks);
+        sudokuGrid = new SudokuGrid(getData().gridDimensions);
         this.addGameObject(sudokuGrid, true);
 
         nextButton = new NextButton("Next Puzzle");

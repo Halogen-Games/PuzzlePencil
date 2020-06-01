@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.viewOld.grid;
+package com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid;
 
 import com.badlogic.gdx.math.Vector2;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.SudokuObject;
-import com.games.halogen.puzzlePencil.sudoku.viewOld.ui.general.TextLabel;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.SudokuObject;
+import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.general.TextLabel;
 
 import java.util.ArrayList;
 
@@ -105,7 +105,7 @@ public class Miniums extends SudokuObject {
         if(num > getCallbacks().getData().numRows){
             throw new RuntimeException("minium number greater than num rows, can't fetch alignment");
         }
-        int numBlocks = getCallbacks().getData().numBlocks;
+        int numBlocks = getCallbacks().getData().gridDimensions;
         int numRows = getCallbacks().getData().numRows;
 
         if(numRows == 1){

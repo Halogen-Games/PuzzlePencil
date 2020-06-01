@@ -1,8 +1,8 @@
-package com.games.halogen.puzzlePencil.sudoku.model.grid;
+package com.games.halogen.puzzlePencil.sudoku.grid.model.grid;
 
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
-import com.games.halogen.puzzlePencil.sudoku.model.House;
-import com.games.halogen.puzzlePencil.sudoku.model.HouseType;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.House;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.HouseType;
 
 import java.util.ArrayList;
 
@@ -92,17 +92,35 @@ public class Grid {
         return rv;
     }
 
+    public void resetGrid() {
+        for(Cell c:cells){
+            c.clearValue();
+            c.setEditable(true);
+            c.setValidity(true);
+        }
+    }
+
     public void setCellValue(Integer r, Integer c, Integer num) {
         if(num < 1 || num > dimensions){
-            throw new RuntimeException("Can;t set cell Value. Value out of dimensions : " + num);
+            throw new RuntimeException("Can't set cell Value. Value out of dimensions : " + num);
         }
         Cell cell = getCell(r, c);
         cell.setValue(num);
         cell.getPenMarks().removeAllMarks();
 
+        boolean isValid = true;
+
         for(House h: cell.getHouses()){
             h.removePencilMarkFromCells(num);
+            for(Cell c1: h.getCells()) {
+                if (c1.getValue() == num && c1 != cell){
+                    c1.setValidity(false);
+                    isValid = false;
+                }
+            }
         }
+
+        cell.setValidity(isValid);
     }
 
     public void clearCellValue(Integer r, Integer c){
@@ -112,20 +130,12 @@ public class Grid {
         for(House h: cell.getHouses()){
             for(Cell c1: h.getCells()){
                 updateCellMarks(c1);
+                updateCellValidity(c1);
             }
         }
     }
 
-    public void clearAllCells() {
-        for(Cell c:cells){
-            c.clearValue();
-        }
-    }
-
-    public Cell getCell(int r, int c){
-        return cells.get(r*dimensions + c);
-    }
-
+    //updates cell marks
     private void updateCellMarks(Cell c){
         for(int  i=1; i<=getDimension(); i++){
             c.getPenMarks().addMark(i);
@@ -134,6 +144,56 @@ public class Grid {
                     c.getPenMarks().removeMark(i);
                     break;
                 }
+            }
+        }
+    }
+
+    //updates cell validity
+    private void updateCellValidity(Cell c){
+        if(!c.hasValue()) {
+            c.setValidity(true);
+            return;
+        }
+
+        c.setValidity(true);
+
+        for(int i=1; i<=dimensions; i++){
+            for(House h:c.getHouses()){
+                for(Cell c1:h.getCells()){
+                    if(c1.getValue() == c.getValue() && c1 != c){
+                        c.setValidity(false);
+                    }
+                }
+            }
+        }
+    }
+
+    public Cell getCell(int r, int c){
+        if(r < 0 || r > dimensions || c < 0 || c > dimensions){
+            throw new RuntimeException(String.format("cell coordinates out of range: (%d, %d)\n", r, c));
+        }
+        return cells.get(r*dimensions + c);
+    }
+
+    public void toggleCellValue(int r, int c, int num) {
+        if(!getCell(r, c).isEditable()){
+            return;
+        }
+        if(getCell(r, c).getValue() == num){
+            clearCellValue(r, c);
+        }else{
+            setCellValue(r, c, num);
+        }
+    }
+
+    public void toggleVisibleMark(int r, int c, int num) {
+        getCell(r, c).getVisibleMarks().toggleMark(num);
+    }
+
+    public void freezeFilledCells() {
+        for(Cell c: cells){
+            if(c.hasValue()){
+                c.setEditable(false);
             }
         }
     }

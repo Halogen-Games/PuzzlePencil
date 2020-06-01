@@ -1,7 +1,7 @@
-package com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui;
+package com.games.halogen.puzzlePencil.sudoku.grid.view.ui;
 
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.SudokuObject;
 
 public class Background extends SudokuObject {
     private Image img;

@@ -1,4 +1,4 @@
-package com.games.halogen.puzzlePencil.sudoku.model;
+package com.games.halogen.puzzlePencil.sudoku.grid.model;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -36,5 +36,13 @@ public class PenMarks {
 
     public void removeMark(Integer num) {
         marks.remove(num);
+    }
+
+    public void toggleMark(Integer num) {
+        if (marks.contains(num)){
+            marks.remove(num);
+        }else{
+            marks.add(num);
+        }
     }
 }

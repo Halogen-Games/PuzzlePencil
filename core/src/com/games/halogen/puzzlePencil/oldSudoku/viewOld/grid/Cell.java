@@ -6,7 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 import com.games.halogen.puzzlePencil.oldSudoku.viewOld.SudokuObject;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.general.TextLabel;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.ui.general.TextLabel;
 import com.games.halogen.puzzlePencil.sudoku.world.SudokuLayoutManager;
 
 public class Cell extends SudokuObject {
@@ -69,9 +69,9 @@ public class Cell extends SudokuObject {
         this.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                getCallbacks().resetActiveCell();
+                getCallbacks().deselectCell();
                 setActive(true);
-                getCallbacks().setActiveCell(thisCell);
+                getCallbacks().selectCell(coordinates.getFirst(), coordinates.getSecond());
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

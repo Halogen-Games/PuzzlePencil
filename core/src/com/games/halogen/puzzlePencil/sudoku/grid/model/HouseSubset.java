@@ -1,6 +1,6 @@
-package com.games.halogen.puzzlePencil.sudoku.model;
+package com.games.halogen.puzzlePencil.sudoku.grid.model;
 
-import com.games.halogen.puzzlePencil.sudoku.model.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.grid.Cell;
 
 import java.util.ArrayList;
 

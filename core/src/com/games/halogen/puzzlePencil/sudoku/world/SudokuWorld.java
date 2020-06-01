@@ -2,12 +2,11 @@ package com.games.halogen.puzzlePencil.sudoku.world;
 
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.Cell;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.keypad.KeyPad;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.SudokuGrid;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.Background;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.NextButton;
+import com.games.halogen.puzzlePencil.sudoku.grid.SudokuGrid;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.ui.Background;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.ui.NextButton;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.ui.keypad.KeyPad;
 
 public class SudokuWorld extends GameWorld {
     private Background bg;
@@ -22,7 +21,7 @@ public class SudokuWorld extends GameWorld {
         this.addGameObject(bg, true);
 
         sudokuGrid = new SudokuGrid(getData().gridDimensions);
-        this.addGameObject(sudokuGrid, true);
+        this.addGameObject(sudokuGrid.getView(), true);
 
         nextButton = new NextButton("Next Puzzle");
         this.addGameObject(nextButton, true);
@@ -37,14 +36,13 @@ public class SudokuWorld extends GameWorld {
         super.layout();
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
         Viewport vp = getCallbacks().getDependencyInjector().getViewport();
-        PuzzlePencilInjector di = getCallbacks().getDependencyInjector();
 
         bg.setSize(vp.getWorldWidth(), vp.getWorldHeight());
         bg.setPosition(0, 0);
 
         //fixme: setting grid size has no effect on children sizes
-        sudokuGrid.setSize(lm.gridSize, lm.gridSize);
-        sudokuGrid.setPosition(lm.gridPos.x, lm.gridPos.y);
+        sudokuGrid.getView().setSize(lm.gridSize, lm.gridSize);
+        sudokuGrid.getView().setPosition(lm.gridPos.x, lm.gridPos.y);
 
         nextButton.setSize(lm.nextButtSize.x, lm.nextButtSize.y);
         nextButton.setPosition((vp.getWorldWidth() - nextButton.getWidth())/2,35);
@@ -97,20 +95,20 @@ public class SudokuWorld extends GameWorld {
         return getGameWorldCallbacks(SudokuWorldCallbacks.class);
     }
 
-    void setActiveCell(Cell c) {
-        sudokuGrid.setActiveCell(c);
+    void selectCell(int r, int c) {
+        sudokuGrid.selectCell(r, c);
     }
 
-    void resetActiveCell() {
-        sudokuGrid.resetActiveCell();
+    void deselectCell() {
+        sudokuGrid.deselectCell();
     }
 
-    void toggleInActiveCell(int num) {
-        sudokuGrid.toggleValInActiveCell(num);
+    void toggleInSelectedCell(int num) {
+        sudokuGrid.toggleValInSelectedCell(num);
     }
 
-    void toggleMiniumInActiveCell(int num) {
-        sudokuGrid.toggleMiniumInActiveCell(num);
+    void toggleVisibleInSelectedCell(int num) {
+        sudokuGrid.toggleVisibleMarkInSelectedCell(num);
     }
 
     void nextButtonRevealed(boolean isRevealed)

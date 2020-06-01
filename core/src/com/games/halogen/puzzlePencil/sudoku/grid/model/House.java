@@ -1,6 +1,6 @@
-package com.games.halogen.puzzlePencil.sudoku.model;
+package com.games.halogen.puzzlePencil.sudoku.grid.model;
 
-import com.games.halogen.puzzlePencil.sudoku.model.grid.Cell;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.grid.Cell;
 
 import java.util.ArrayList;
 
@@ -26,14 +26,19 @@ public class House {
         return new ArrayList<>();
     }
 
-    public boolean hasCellWithNum(int num){
+    public ArrayList<Cell> getCellsWithNum(int num){
+        ArrayList<Cell> rv = new ArrayList<>();
         for(Cell c:cells){
             if(c.getValue() == num){
-                return true;
+                rv.add(c);
             }
         }
 
-        return false;
+        return rv;
+    }
+
+    public boolean hasCellWithNum(int num){
+        return getCellsWithNum(num).size() != 0;
     }
 
     public void addCell(Cell cell) {

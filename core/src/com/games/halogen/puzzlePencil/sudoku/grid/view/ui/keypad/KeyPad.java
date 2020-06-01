@@ -1,9 +1,9 @@
-package com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.keypad;
+package com.games.halogen.puzzlePencil.sudoku.grid.view.ui.keypad;
 
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.SudokuObject;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.ui.general.SudokuTextButton;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.SudokuObject;
+import com.games.halogen.puzzlePencil.sudoku.grid.view.ui.general.SudokuTextButton;
 
 import java.util.ArrayList;
 
@@ -31,9 +31,9 @@ public class KeyPad extends SudokuObject {
                         @Override
                         public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                             if(fillingMiniums) {
-                                getCallbacks().toggleMiniumInActiveCell(num);
+                                getCallbacks().toggleVisibleInSelectedCell(num);
                             }else{
-                                getCallbacks().toggleNumInActiveCell(num);
+                                getCallbacks().toggleNumInSelectedCell(num);
                             }
                             return super.touchDown(event, x, y, pointer, button);
                         }

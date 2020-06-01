@@ -1,8 +1,8 @@
 package com.games.halogen.puzzlePencil.sudoku.generator;
 
 import com.games.halogen.gameEngine.utils.Pair.IntPair;
-import com.games.halogen.puzzlePencil.sudoku.model.grid.Grid;
-import com.games.halogen.puzzlePencil.sudoku.model.PenMarks;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.grid.Grid;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.PenMarks;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -12,10 +12,12 @@ public class GridGenerator {
     private static final Random random = GridGeneratorParameters.getRandom();
 
     public static void generatePuzzle(Grid grid){
-        grid.clearAllCells();
+        grid.resetGrid();
         if(!generateFilledGrid(grid)){
             throw new RuntimeException("Can't create a filled grid. Possible Bug");
         }
+
+        grid.freezeFilledCells();
     }
 
     /*
@@ -43,6 +45,7 @@ public class GridGenerator {
             grid.setCellValue(currCoords.getFirst(), currCoords.getSecond(), validFills.get(i));
 
             //base case 2 - if grid completely filled, return success
+            System.out.println(cellNum);
             if(cellNum == grid.getDimension() * grid.getDimension() - 1){
                 return true;
             }

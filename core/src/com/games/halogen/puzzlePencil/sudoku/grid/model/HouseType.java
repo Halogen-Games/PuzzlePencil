@@ -1,6 +1,6 @@
-package com.games.halogen.puzzlePencil.sudoku.model;
+package com.games.halogen.puzzlePencil.sudoku.grid.model;
 
-import com.games.halogen.puzzlePencil.sudoku.model.grid.Grid;
+import com.games.halogen.puzzlePencil.sudoku.grid.model.grid.Grid;
 
 public enum HouseType {
     ROW,

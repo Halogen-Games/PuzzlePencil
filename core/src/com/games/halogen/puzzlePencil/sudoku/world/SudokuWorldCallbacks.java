@@ -1,7 +1,6 @@
 package com.games.halogen.puzzlePencil.sudoku.world;
 
 import com.games.halogen.gameEngine.scene.world.GameWorldCallbacks;
-import com.games.halogen.puzzlePencil.oldSudoku.viewOld.grid.Cell;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 
 public class SudokuWorldCallbacks extends GameWorldCallbacks {
@@ -29,21 +28,21 @@ public class SudokuWorldCallbacks extends GameWorldCallbacks {
         return getWorld().getData();
     }
 
-    public void resetActiveCell() {
-        getWorld().resetActiveCell();
+    public void deselectCell() {
+        getWorld().deselectCell();
     }
 
-    public void setActiveCell(Cell c) {
-        getWorld().setActiveCell(c);
+    public void selectCell(int r, int c) {
+        getWorld().selectCell(r, c);
     }
 
-    public void toggleNumInActiveCell(int num) {
-        getWorld().toggleInActiveCell(num);
+    public void toggleNumInSelectedCell(int num) {
+        getWorld().toggleInSelectedCell(num);
     }
 
 
-    public void toggleMiniumInActiveCell(int num) {
-        getWorld().toggleMiniumInActiveCell(num);
+    public void toggleVisibleInSelectedCell(int num) {
+        getWorld().toggleVisibleInSelectedCell(num);
     }
 
     public void nextButtonRevealed(boolean isRevealed) {

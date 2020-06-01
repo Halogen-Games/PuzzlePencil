@@ -17,6 +17,9 @@ public class GridGenerator {
             throw new RuntimeException("Can't create a filled grid. Possible Bug");
         }
 
+        //fixme: this should cause red mark
+        grid.setCellValue(1,1,1);
+
         grid.freezeFilledCells();
     }
 
@@ -45,7 +48,6 @@ public class GridGenerator {
             grid.setCellValue(currCoords.getFirst(), currCoords.getSecond(), validFills.get(i));
 
             //base case 2 - if grid completely filled, return success
-            System.out.println(cellNum);
             if(cellNum == grid.getDimension() * grid.getDimension() - 1){
                 return true;
             }
@@ -78,6 +80,7 @@ public class GridGenerator {
             ints.add(pm.getMark(i));
         }
         Collections.shuffle(ints, random);
+
         return ints;
     }
 }

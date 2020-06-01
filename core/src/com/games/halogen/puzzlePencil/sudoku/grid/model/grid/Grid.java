@@ -61,6 +61,9 @@ public class Grid {
         //todo: create block houses from a file
         //creating blocks as normal sudoku
         int houseWidth = (int)Math.sqrt(dimensions);
+        if(houseWidth * houseWidth != dimensions){
+            throw new RuntimeException("dimension not a square number");
+        }
         for(int br = 0; br<houseWidth; br++){
             for(int bc = 0; bc < houseWidth; bc++) {
                 House h = new House(HouseType.BLOCK);
@@ -94,9 +97,7 @@ public class Grid {
 
     public void resetGrid() {
         for(Cell c:cells){
-            c.clearValue();
-            c.setEditable(true);
-            c.setValidity(true);
+            c.reset();
         }
     }
 
@@ -108,25 +109,17 @@ public class Grid {
         cell.setValue(num);
         cell.getPenMarks().removeAllMarks();
 
-        boolean isValid = true;
-
-        for(House h: cell.getHouses()){
-            h.removePencilMarkFromCells(num);
-            for(Cell c1: h.getCells()) {
-                if (c1.getValue() == num && c1 != cell){
-                    c1.setValidity(false);
-                    isValid = false;
-                }
-            }
-        }
-
-        cell.setValidity(isValid);
+        updateNeighboursMarkAndValidity(cell);
     }
 
     public void clearCellValue(Integer r, Integer c){
         Cell cell = getCell(r, c);
 
         cell.clearValue();
+        updateNeighboursMarkAndValidity(cell);
+    }
+
+    private void updateNeighboursMarkAndValidity(Cell cell){
         for(House h: cell.getHouses()){
             for(Cell c1: h.getCells()){
                 updateCellMarks(c1);
@@ -137,6 +130,10 @@ public class Grid {
 
     //updates cell marks
     private void updateCellMarks(Cell c){
+        if(c.hasValue()){
+            c.getPenMarks().removeAllMarks();
+            return;
+        }
         for(int  i=1; i<=getDimension(); i++){
             c.getPenMarks().addMark(i);
             for(House h: c.getHouses()){
@@ -177,6 +174,7 @@ public class Grid {
 
     public void toggleCellValue(int r, int c, int num) {
         if(!getCell(r, c).isEditable()){
+            System.out.println("Not Editable");
             return;
         }
         if(getCell(r, c).getValue() == num){
@@ -196,5 +194,35 @@ public class Grid {
                 c.setEditable(false);
             }
         }
+    }
+
+    public void printGrid() {
+        for(int i=0;i<dimensions;i++){
+            System.out.print("=");
+        }
+        System.out.println();
+        for(int row=0; row<dimensions;row++){
+            for(int col=0;col<dimensions;col++){
+                if(col%(int)(Math.sqrt(dimensions)) == 0){
+                    System.out.print("|");
+                }
+                if(getCell(row,col).hasValue()) {
+                    System.out.print(getCell(row, col).getValue());
+                }else{
+                    System.out.print(" ");
+                }
+            }
+            System.out.println();
+            if((row+1)%(int)(Math.sqrt(dimensions)) == 0){
+                for(int i=0;i<dimensions + (int)(Math.sqrt(dimensions));i++){
+                    System.out.print("-");
+                }
+                System.out.println();
+            }
+        }
+        for(int i=0;i<dimensions;i++){
+            System.out.print("=");
+        }
+        System.out.println();
     }
 }

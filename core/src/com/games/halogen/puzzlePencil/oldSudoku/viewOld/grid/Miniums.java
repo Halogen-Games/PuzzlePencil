@@ -21,7 +21,7 @@ public class Miniums extends SudokuObject {
     @Override
     public void init() {
 
-        for(int i=0; i<getCallbacks().getData().numRows; i++){
+        for(int i = 0; i<getCallbacks().getData().gridDimensions; i++){
             TextLabel l = new TextLabel(Integer.toString(i+1), getCallbacks().getDependencyInjector().getAssetManager().fontLabelStyle);
 
             Vector2 alignment = getNumberAlignments(i);
@@ -56,7 +56,7 @@ public class Miniums extends SudokuObject {
     }
 
     public void add(Integer i) {
-        if(i < 1 || i > getCallbacks().getData().numRows){
+        if(i < 1 || i > getCallbacks().getData().gridDimensions){
             throw new RuntimeException("Miniums value out of range:" + i);
         }
         this.nums.add(i);
@@ -68,7 +68,7 @@ public class Miniums extends SudokuObject {
     }
 
     public void remove(Integer i) {
-        if(i < 1 || i > getCallbacks().getData().numRows){
+        if(i < 1 || i > getCallbacks().getData().gridDimensions){
             throw new RuntimeException("Miniums value out of range:" + i);
         }
         nums.remove(i);
@@ -102,11 +102,11 @@ public class Miniums extends SudokuObject {
     }
 
     private Vector2 getNumberAlignments(int num){
-        if(num > getCallbacks().getData().numRows){
+        if(num > getCallbacks().getData().gridDimensions){
             throw new RuntimeException("minium number greater than num rows, can't fetch alignment");
         }
         int numBlocks = getCallbacks().getData().gridDimensions;
-        int numRows = getCallbacks().getData().numRows;
+        int numRows = getCallbacks().getData().gridDimensions;
 
         if(numRows == 1){
             return new Vector2(0.5f,0.5f);

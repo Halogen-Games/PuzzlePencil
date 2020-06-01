@@ -23,7 +23,7 @@ public class SudokuGrid extends SudokuObject {
 
     @Override
     public void init() {
-        int numRows = getCallbacks().getData().numRows;
+        int numRows = getCallbacks().getData().gridDimensions;
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
         lm.cellSize = (lm.gridSize / numRows) * (1 - lm.cellMarginToSizeRatio);
         lm.cellMargin = (lm.gridSize / numRows) * lm.cellMarginToSizeRatio / 2;
@@ -39,7 +39,7 @@ public class SudokuGrid extends SudokuObject {
 
     private void createCells() {
         SudokuLayoutManager lm = getCallbacks().getLayoutManager();
-        int numRows = getCallbacks().getData().numRows;
+        int numRows = getCallbacks().getData().gridDimensions;
         cells = new ArrayList<>();
         for(int i = 0; i< numRows; i++){
             ArrayList<Cell> row = new ArrayList<>();
@@ -161,7 +161,7 @@ public class SudokuGrid extends SudokuObject {
     }
 
     public int getNumRows() {
-        return getCallbacks().getData().numRows;
+        return getCallbacks().getData().gridDimensions;
     }
 
     public void setActiveCell(Cell c){

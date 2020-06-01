@@ -45,4 +45,8 @@ public class PenMarks {
             marks.add(num);
         }
     }
+
+    public String toString(){
+        return marks.toString();
+    }
 }

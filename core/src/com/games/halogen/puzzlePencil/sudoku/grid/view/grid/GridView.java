@@ -40,12 +40,12 @@ public class GridView extends SudokuObject {
                 SudokuLayoutManager lm = getCallbacks().getLayoutManager();
                 c.setSize(lm.cellSize + 2*lm.cellMargin, lm.cellSize + 2*lm.cellMargin);
                 c.setPosition(col*c.getWidth(), row*c.getHeight());
+                addChildObject(c);
+
+                cells.add(c);
 
                 updateCellValue(row, col);
                 updateCellMarks(row, col);
-
-                cells.add(c);
-                addChildObject(c);
             }
         }
     }

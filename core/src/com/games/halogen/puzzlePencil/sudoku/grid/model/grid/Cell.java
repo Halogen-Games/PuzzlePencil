@@ -31,6 +31,7 @@ public class Cell {
         setupPenMarks();
 
         houses = new ArrayList<>();
+        clearValue();
     }
 
     private void setupPenMarks() {
@@ -65,9 +66,16 @@ public class Cell {
         this.isValidVal = validity;
     }
 
+    void reset() {
+        clearValue();
+        setEditable(true);
+        setValidity(true);
+        setupPenMarks();
+    }
     /*
     Below functions are public and should be getters only
      */
+
     public PenMarks getPenMarks() {
         return penMarks;
     }

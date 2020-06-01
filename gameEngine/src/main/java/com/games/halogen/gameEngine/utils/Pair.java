@@ -1,6 +1,8 @@
 package com.games.halogen.gameEngine.utils;
 
-public class Pair<T, U> {
+import java.util.Locale;
+
+public abstract class Pair<T, U> {
 
     public static Object IntPair;
     private T first;
@@ -24,9 +26,16 @@ public class Pair<T, U> {
         this.second = second;
     }
 
+    public abstract String toString();
+
     public static class IntPair extends Pair<Integer, Integer>{
         public IntPair(Integer first, Integer second) {
             super(first, second);
+        }
+
+        @Override
+        public String toString() {
+            return String.format(Locale.US, "(%d, %d)", getFirst(), getSecond());
         }
     }
 }

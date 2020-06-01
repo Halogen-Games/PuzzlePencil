@@ -17,12 +17,9 @@ public class SudokuGrid {
 
     public SudokuGrid(int gridDimensions) {
         gridModel = new Grid(gridDimensions);
-        GridGeneratorParameters.seed = 1;
-        GridGenerator.generatePuzzle(gridModel);
+        recreateGrid();
 
         gridView = new GridView(gridModel);
-
-        selectedCellCoordinates = new IntPair(-1,-1);
     }
 
     public GridView getView() {
@@ -30,23 +27,27 @@ public class SudokuGrid {
     }
 
     public void recreateGrid() {
-        GridGeneratorParameters.seed = 1;
         GridGenerator.generatePuzzle(gridModel);
     }
 
     public void selectCell(int r, int c) {
-        selectedCellCoordinates.set(r, c);
+        selectedCellCoordinates = new IntPair(r, c);
         gridView.setCellHighlight(r, c, CellHighlight.SELECTED);
     }
 
     public void deselectCell() {
-        int r = selectedCellCoordinates.getFirst();
-        int c = selectedCellCoordinates.getSecond();
-        gridView.setCellHighlight(r, c, CellHighlight.NONE);
-        selectedCellCoordinates.set(-1,-1);
+        if(selectedCellCoordinates != null) {
+            int r = selectedCellCoordinates.getFirst();
+            int c = selectedCellCoordinates.getSecond();
+            gridView.setCellHighlight(r, c, CellHighlight.NONE);
+        }
+        selectedCellCoordinates = null;
     }
 
     public void toggleValInSelectedCell(int num) {
+        if(selectedCellCoordinates == null){
+            return;
+        }
         int r = selectedCellCoordinates.getFirst();
         int c = selectedCellCoordinates.getSecond();
         gridModel.toggleCellValue(r, c, num);

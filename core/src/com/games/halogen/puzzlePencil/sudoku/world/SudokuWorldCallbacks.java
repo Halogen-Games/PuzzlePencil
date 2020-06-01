@@ -37,6 +37,7 @@ public class SudokuWorldCallbacks extends GameWorldCallbacks {
     }
 
     public void toggleNumInSelectedCell(int num) {
+        System.out.println("Toggling");
         getWorld().toggleInSelectedCell(num);
     }
 

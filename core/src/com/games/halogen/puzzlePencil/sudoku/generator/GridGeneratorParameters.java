@@ -9,4 +9,9 @@ public class GridGeneratorParameters {
     public static Random getRandom() {
         return random;
     }
+
+    public static void setSeed(int seed){
+        GridGeneratorParameters.seed = seed;
+        random = new Random(seed);
+    }
 }

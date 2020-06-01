@@ -49,7 +49,7 @@ public class House {
         return type;
     }
 
-    public void removePencilMarkFromCells(Integer num) {
+    public void removePenMarkFromCells(Integer num) {
         for(Cell c:cells){
             c.getPenMarks().removeMark(num);
         }

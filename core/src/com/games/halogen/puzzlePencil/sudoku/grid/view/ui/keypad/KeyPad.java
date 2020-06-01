@@ -22,7 +22,7 @@ public class KeyPad extends SudokuObject {
     }
 
     private void setupNumKeys() {
-        for(int i=0;i<getCallbacks().getData().numRows;i++){
+        for(int i = 0; i<getCallbacks().getData().gridDimensions; i++){
             final int num = i+1;
             SudokuTextButton butt = new SudokuTextButton(Integer.toString(i+1)){
                 @Override

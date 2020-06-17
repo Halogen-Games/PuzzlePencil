@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import java.util.HashMap;
 import java.util.Map;
 
-class ShapeShader {
+public class ShapeShader {
     private final PolygonSpriteBatch batch;
     private final Viewport vp;
 

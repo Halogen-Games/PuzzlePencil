@@ -7,7 +7,8 @@ varying vec2 v_texCoords;
 varying vec4 vPosition;
 
 void main() {
-    vec4 color = texture2D(u_texture, v_texCoords.x);
+    vec4 color = texture2D(u_texture, v_texCoords);
+
     gl_FragColor = color;
 }
 

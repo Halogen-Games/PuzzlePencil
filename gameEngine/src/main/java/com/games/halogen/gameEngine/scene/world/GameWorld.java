@@ -46,14 +46,14 @@ public abstract class GameWorld extends Stage {
         addGameObject(obj, false);
     }
 
-    protected <T extends GameDependencyInjector> T getGameDependencyInjector(Class<T> type){
+    public <T extends GameDependencyInjector> T getGameDependencyInjector(Class<T> type){
         if(injector == null){
             return null;
         }
         return type.cast(injector);
     }
 
-    protected <T extends GameWorldCallbacks> T getGameWorldCallbacks(Class<T> type){
+    public <T extends GameWorldCallbacks> T getGameWorldCallbacks(Class<T> type){
         return type.cast(callbacks);
     }
 

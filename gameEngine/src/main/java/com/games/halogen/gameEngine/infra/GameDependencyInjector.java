@@ -47,7 +47,7 @@ public abstract class GameDependencyInjector {
 
     public abstract void setAssetManager();
 
-    protected <T extends GameAssetManager> T getGameAssetManager(Class<T> type){
+    public <T extends GameAssetManager> T getGameAssetManager(Class<T> type){
         return type.cast(gameAssetManager);
     }
 

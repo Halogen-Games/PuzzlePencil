@@ -13,6 +13,8 @@ public class DesktopLauncher {
 
 		config.samples = 4;
 
+		config.fullscreen = true;
+
 		new LwjglApplication(new PuzzlePencil(), config);
 	}
 }

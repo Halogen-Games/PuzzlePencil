@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.games.halogen.gameEngine.infra.GameAssetManager;
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
 import com.games.halogen.gameEngine.renderer.shaders.shaderPrograms.DefaultShader;
@@ -43,7 +44,9 @@ public class ShadedBuffer extends GameObject {
     }
 
     private void setUniforms(){
-        this.shader.setUniformf("u_resolution", img.getWidth(), img.getHeight());
+        Viewport vp = this.getGameWorld(GameWorld.class).getGameDependencyInjector(GameDependencyInjector.class).getViewport();
+        this.shader.setUniformf("u_resolution", vp.getScreenWidth(), vp.getScreenHeight());
+        this.shader.setUniformf("u_fboHeight", fbo.getHeight());
         this.shader.setUniformf("u_time", elapsed);
     }
 

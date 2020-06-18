@@ -2,15 +2,16 @@ package com.games.halogen.puzzlePencil.shader.world;
 
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.games.halogen.gameEngine.infra.GameDependencyInjector;
+import com.games.halogen.gameEngine.renderer.rayMarcher.RayMarchedScene;
 import com.games.halogen.gameEngine.renderer.shaders.primitives.ShadedBuffer;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 import com.games.halogen.puzzlePencil.shader.shaderPrograms.Mandelbrot;
 import com.games.halogen.puzzlePencil.shader.shaderPrograms.TestShader1;
+import com.games.halogen.puzzlePencil.shader.view.Scenery;
 
 public class ShaderWorld extends GameWorld {
-    private ShadedBuffer shadeBuff;
-
+    private Scenery scenery;
     public ShaderWorld(GameDependencyInjector injector) {
         super(injector);
     }
@@ -21,8 +22,8 @@ public class ShaderWorld extends GameWorld {
         int width = (int)getDependencyInjector().getVirtualWidth();
         int height = (int)getDependencyInjector().getVirtualHeight();
 
-        shadeBuff = new ShadedBuffer(width, height, new TestShader1());
-        this.addGameObject(shadeBuff);
+        scenery = new Scenery(width, height);
+        this.addGameObject(scenery);
     }
 
     @Override
@@ -55,6 +56,6 @@ public class ShaderWorld extends GameWorld {
     @Override
     public void layout() {
         super.layout();
-        shadeBuff.setSize(getDependencyInjector().getViewport().getWorldWidth(), getDependencyInjector().getViewport().getWorldHeight());
+        scenery.setSize(getDependencyInjector().getViewport().getWorldWidth(), getDependencyInjector().getViewport().getWorldHeight());
     }
 }

@@ -6,8 +6,9 @@ import com.games.halogen.puzzlePencil.sudoku.SudokuScreen;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 
 public class PuzzlePencil extends HalogenGame {
-	public static final int VIRTUAL_WIDTH = 1920;
-	public static final int VIRTUAL_HEIGHT = 1080;
+	public static final int factor = 120;
+	public static final int VIRTUAL_WIDTH = 16 * factor;
+	public static final int VIRTUAL_HEIGHT = 9 * factor;
 
 	@Override
 	protected void init() {

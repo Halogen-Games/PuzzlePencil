@@ -56,9 +56,9 @@ struct Torus{
 /*
 returns distance of point p from the sphere defined by cen and rad
 */
-float distSphere(vec3 p, Sphere s){
-    p -= s.center;
-    return length(p) - s.radius;
+float distSphere(vec3 p, vec3 cen, float rad){
+    p -= cen;
+    return length(p) - rad;
 }
 
 /*

@@ -3,7 +3,6 @@ package com.games.halogen.gameEngine.renderer.rayMarcher;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.ui.WidgetGroup;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.games.halogen.gameEngine.renderer.shaders.primitives.ShadedBuffer;
 import com.games.halogen.gameEngine.scene.view.GameObject;
@@ -13,25 +12,21 @@ import java.util.Locale;
 public abstract class RayMarchedScene extends GameObject {
     private ShadedBuffer buffer;
 
+    private String sceneSDFFunc;
     private String sceneSDF;
-    private String sceneSDFContent;
 
     public RayMarchedScene(int width, int height){
         buffer = new ShadedBuffer(width, height, createShader());
     }
 
-    public abstract void setupScene();
+    public abstract String setupScene();
 
     /*
     Primitives Functions
      */
-    protected void addSphere(Vector3 pos,float radius){
-        String sphereCode = "    Sphere s;\n" +
-                "    s.center = vec3(%f, %f, %f);\n" +
-                "    s.radius = %f;\n" +
-                "    d = min(d, distSphere(p, s));\n";
-
-        sceneSDFContent += String.format(Locale.US, sphereCode, pos.x, pos.y, pos.z, radius);
+    protected String sphere(Vector3 pos, float radius){
+        String sphereCode = "distSphere(p, vec3(%f, %f, %f), %f)\n";
+        return String.format(Locale.US, sphereCode, pos.x, pos.y, pos.z, radius);
     }
 
     protected void addCapsule(Vector3 a, Vector3 b, float radius){
@@ -41,7 +36,18 @@ public abstract class RayMarchedScene extends GameObject {
                 "    c.radius = %f;\n" +
                 "    d = min(d, distCapsule(p, c));\n";
 
-        sceneSDFContent += String.format(Locale.US, capsuleCode, a.x, a.y, a.z, b.x, b.y, b.z, radius);
+        sceneSDF += String.format(Locale.US, capsuleCode, a.x, a.y, a.z, b.x, b.y, b.z, radius);
+    }
+
+    /*
+    Operation Functions
+     */
+    protected String add(String sdf1, String sdf2){
+        return String.format(Locale.US,"min(%s, %s)", sdf1, sdf2);
+    }
+
+    protected String mix(String sdf1, String sdf2, String mix){
+        return String.format(Locale.US,"mix(%s, %s, %s)", sdf1, sdf2, mix);
     }
 
     /*
@@ -59,8 +65,15 @@ public abstract class RayMarchedScene extends GameObject {
     }
 
     /*
-            Private Functions
-             */
+    getters
+     */
+    protected String getSceneSDF(){
+        return sceneSDF;
+    }
+
+    /*
+    Private Functions
+     */
     private ShaderProgram createShader() {
         String vertShader = Gdx.files.internal("shaders/rayMarcher/rayMarchVert.glsl").readString();
         String fragShader = generateFragShader();
@@ -80,18 +93,17 @@ public abstract class RayMarchedScene extends GameObject {
         String prefix = Gdx.files.internal("shaders/rayMarcher/rayMarchFragPrefix.glsl").readString();
 
         updateSceneSDF();
-        return prefix + sceneSDF;
+        return prefix + sceneSDFFunc;
     }
 
     private void updateSceneSDF(){
-        sceneSDF = "";
-        sceneSDFContent = "";
-        setupScene();
+        sceneSDFFunc = "";
+        sceneSDF = "d";
 
-        sceneSDF += "float distScene(vec3 p){\n" +
+        sceneSDFFunc += "float distScene(vec3 p){\n" +
                     "float d = distXZ(p);\n" +
                     "\n";
-        sceneSDF += sceneSDFContent;
-        sceneSDF += "return d;\n}";
+
+        sceneSDFFunc += String.format("return %s;\n}", setupScene());
     }
 }

@@ -17,6 +17,8 @@ public class ShadedBuffer extends GameObject {
     private FrameBuffer fbo;
     private ShaderProgram shader;
 
+    private Viewport vp;
+
     private TextureRegion squareRegion;
     private Image img;
 
@@ -35,6 +37,7 @@ public class ShadedBuffer extends GameObject {
 
     @Override
     public void init() {
+        this.vp = this.getGameWorld(GameWorld.class).getGameDependencyInjector(GameDependencyInjector.class).getViewport();
         TextureRegion texReg = new TextureRegion(fbo.getColorBufferTexture());
         texReg.flip(false, true);
         this.img = new Image(texReg);
@@ -44,8 +47,7 @@ public class ShadedBuffer extends GameObject {
     }
 
     private void setUniforms(){
-        Viewport vp = this.getGameWorld(GameWorld.class).getGameDependencyInjector(GameDependencyInjector.class).getViewport();
-        this.shader.setUniformf("u_resolution", vp.getScreenWidth(), vp.getScreenHeight());
+        this.shader.setUniformf("u_resolution", fbo.getWidth(), fbo.getHeight());
         this.shader.setUniformf("u_fboHeight", fbo.getHeight());
         this.shader.setUniformf("u_time", elapsed);
     }
@@ -54,10 +56,14 @@ public class ShadedBuffer extends GameObject {
         batch.flush();
         batch.setShader(this.shader);
         fbo.begin();
+        vp.apply();
         setUniforms();
+        System.out.println(fbo.getWidth());
         batch.draw(squareRegion, 0, 0, fbo.getWidth(), fbo.getHeight());
         batch.flush();
         fbo.end();
+        vp.apply();
+        batch.setShader(null);
     }
 
     @Override

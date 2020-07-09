@@ -5,10 +5,10 @@ import com.games.halogen.gameEngine.renderer.shaders.primitives.ShadedBuffer;
 import com.games.halogen.gameEngine.scene.world.GameWorld;
 import com.games.halogen.puzzlePencil.infra.PuzzlePencilInjector;
 import com.games.halogen.puzzlePencil.shader.shaderPrograms.TestShader;
+import com.games.halogen.puzzlePencil.shader.view.DistortionBuffer;
 import com.games.halogen.puzzlePencil.shader.view.Scenery;
 
 public class ShaderWorld extends GameWorld {
-    private Scenery scenery;
     private ShadedBuffer buffer;
     public ShaderWorld(GameDependencyInjector injector) {
         super(injector);
@@ -20,8 +20,7 @@ public class ShaderWorld extends GameWorld {
         int width = (int)getDependencyInjector().getVirtualWidth();
         int height = (int)getDependencyInjector().getVirtualHeight();
 
-        scenery = new Scenery(width, height);
-        buffer = new ShadedBuffer(width, height, new TestShader());
+        buffer = new DistortionBuffer(width, height, new TestShader());
         this.addGameObject(buffer);
     }
 
@@ -55,7 +54,6 @@ public class ShaderWorld extends GameWorld {
     @Override
     public void layout() {
         super.layout();
-        scenery.setSize(getDependencyInjector().getViewport().getWorldWidth(), getDependencyInjector().getViewport().getWorldHeight());
         buffer.setSize(getDependencyInjector().getViewport().getWorldWidth(), getDependencyInjector().getViewport().getWorldHeight());
     }
 }

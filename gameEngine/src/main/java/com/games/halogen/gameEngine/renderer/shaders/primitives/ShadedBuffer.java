@@ -52,18 +52,23 @@ public class ShadedBuffer extends GameObject {
         this.shader.setUniformf("u_time", elapsed);
     }
 
-    private void drawToBuffer(Batch batch){
+    private void beginBuffer(Batch batch){
         batch.flush();
         batch.setShader(this.shader);
         fbo.begin();
         vp.apply();
         setUniforms();
-        System.out.println(fbo.getWidth());
-        batch.draw(squareRegion, 0, 0, fbo.getWidth(), fbo.getHeight());
+    }
+
+    private void endBuffer(Batch batch){
         batch.flush();
         fbo.end();
         vp.apply();
         batch.setShader(null);
+    }
+
+    protected void drawToBuffer(Batch batch){
+        batch.draw(squareRegion, 0, 0, fbo.getWidth(), fbo.getHeight());
     }
 
     @Override
@@ -74,7 +79,9 @@ public class ShadedBuffer extends GameObject {
 
     @Override
     public void draw(Batch batch, float parentAlpha) {
+        beginBuffer(batch);
         drawToBuffer(batch);
+        endBuffer(batch);
         super.draw(batch, parentAlpha);
     }
 

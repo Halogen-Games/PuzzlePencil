@@ -6,7 +6,7 @@ import com.badlogic.gdx.utils.GdxRuntimeException;
 
 public class RainyDay extends ShaderProgram {
     public RainyDay(){
-        super(Gdx.files.internal("shaders/defaultShaders/defaultVertShader.glsl"),Gdx.files.internal("shaders/screenShaders/rainBuffer.glsl"));
+        super(Gdx.files.internal("shaders/defaultShaders/defaultVertShader.glsl"),Gdx.files.internal("shaders/vertShaders/rainBuffer.glsl"));
 
         if(!this.isCompiled()){
             throw new GdxRuntimeException(this.getLog());

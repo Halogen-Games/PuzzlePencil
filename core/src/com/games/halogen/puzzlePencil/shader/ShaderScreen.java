@@ -9,7 +9,7 @@ public class ShaderScreen extends GameScreen {
 
     public ShaderScreen(PuzzlePencilInjector di, SwitchScreenCallback switchScreenCallback){
         super(di, switchScreenCallback);
-        setClearColor(1,1,1,1);
+        setClearColor(0,0,0,1);
         setGameWorld(new ShaderWorld(di));
     }
 }

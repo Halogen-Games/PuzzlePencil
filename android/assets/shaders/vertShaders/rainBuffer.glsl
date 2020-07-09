@@ -3,6 +3,7 @@ precision highp float;
 #endif
 
 #define PI 3.14159265359
+#define PI2 3.14159265359 * 2.
 
 uniform sampler2D u_texture;//default GL_TEXTURE0, expected by SpriteBatch
 
@@ -222,6 +223,48 @@ vec2 rain(vec2 uv, float t, float speed){
 //        m1 = 1.;
     }
 //    return vec2(m1+m2);
+    return vec2(m1*offset1*30.+m2*offset2*10.);
+}
+
+/*
+returns an offset creating rain drops effect
+*/
+vec2 rain2(vec2 uv, float t, float speed){
+    t *= speed;
+
+    //change coordSys aspect ratio
+    vec2 a = vec2(2.,1.);
+    vec2 st = uv*a;
+
+    //divide coordSys in bands of width 1 and move by random offset
+    st.y += t*0.22 + noise(floor(st.x));
+
+    //get coordinate id by flooring
+    vec2 id = floor(st);
+
+    //convert coord sys into blocks going from -0.5 to 0.5
+    st = fract(st) - 0.5;
+
+    //randomly offset each block's animation in time
+    t += noise(id)*PI2;
+
+    //get point on path of main drop in this block
+    float x = sin(uv.y*((noise(id.x))*PI/8. + PI/8.) + noise(id.x)*2.*PI)*0.35;
+    x = 0.;
+    float y = -sin(t+sin(t+sin(t)*.5)) * 0.43;
+
+    vec2 p1 = vec2(x, y);
+    vec2 offset1 = (st-p1)/a;
+    float d = length(offset1);
+    float m1 = smoothstep(0.06,0.0, d);
+
+    vec2 offset2 = (fract(uv*a.x*vec2(1.,2.))-0.5)/vec2(1.,2.) - vec2(p1.x,0.);
+    d = length(offset2);
+    float m2 = smoothstep(0.15*(0.5 - st.y),0., d) * smoothstep(0., .1, st.y - p1.y);
+
+    if(st.x > .46 || st.y > 0.49){
+        m1 = 1.;
+    }
     return vec2(m1*offset1*30.+m2*offset2*10.);
 }
 

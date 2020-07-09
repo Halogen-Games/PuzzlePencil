@@ -75,10 +75,11 @@ void main() {
     vec2 scale = vec2(5.);
     uv *= scale;
 
-    t *= 0.5;
 
-    uv.x += fbm2(uv + vec2(t, 0.)*0.2, 1, 0.5)*0.4;
-    uv.y += fbm2(uv.yx + vec2(0,t)*0.2, 1, 0.5)*0.4;
+    uv.x += fbm2(uv, 1, 0.5);
+    uv.y += fbm2(uv, 1, 0.5);
+
+    t *= 0.2;
 
     //colors
     vec3 blue = vec3(0., 0.5, 1.);
@@ -87,7 +88,7 @@ void main() {
     vec3 cream = vec3(0.9,0.9,0.6);
 
     //fbm
-    float val = fbm2(uv + vec2(0., -t)*0.2, 1, 0.5);
+    float val = fbm2(uv+t, 1, 0.5);
     color.rgb += mix(red, vec3(0.), smoothstep(0., 1., val*2.));
     color.rgb += mix(vec3(0.), cream, smoothstep(0., 1.,val*2.-1));
 

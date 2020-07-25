@@ -45,24 +45,50 @@ void main() {
     vec2 uv = (gl_FragCoord.xy - .5*u_resolution.xy) / u_resolution.y;
     vec4 color = vec4(vec3(0.),1.);
 
-    float t = u_time;
+    float t = u_time*2.;
     vec2 st  = uv;
 
     /*distortions*/
     vec2 dist = vec2(0.);
 
-    float angle = atan(uv.y, uv.x) * 180. / PI;
-    float r = length(uv);
+    //sin
+    st *= 1.;
+//    dist += sin((st.xy + t*0.2)*PI2) * 0.2;
+//    dist += sin((st.yx + t*0.2)*PI2) * 1.;
+//    dist += sin((cos(st.yx) + t*0.2)*PI2) * 1.;
+    dist += sin((st.x + t*0.2)*PI2) * cos((st.y*3. + t*0.2)*PI2);
 
-    float angDiff = sin(r*10.*PI2 + t*10.)*60.;
-//    angle += angDiff;
+    /*patterns*/
+    st = uv * 10.;
+    t = u_time;
 
-    uv = r * vec2(cos(angle*PI/180.), sin(angle*PI/180.));
+    st += dist;
+    vec2 id = floor(st);
+    vec2 f = fract(st);
 
-//    uv += dist;
+    //bars
+    //color += step(0.5, fract(uv.x));
+    //color += smoothstep(0.22, 0.28, f.x) * smoothstep(0.78, 0.72, f.x);
 
-    float thickness = 0.01 * (1. + abs(angDiff)/60.);
-    color += smoothstep(-thickness, 0.0, uv.y) * smoothstep(thickness, 0., uv.y) * smoothstep(-0.01, 0.01, uv.x);
+    //check
+    //color += step(0.5, fract(uv.x + floor(uv.y)*0.5));
+    //color += step(0.5, fract(st.x + floor(st.y*2.)*0.5));
+    //float fDash = fract(st.x + floor(st.y*2.)*0.5);
+//    float blur = 0.01;
+//    color.rgb += abs(smoothstep(0.25-blur, 0.25+blur, f.x) * smoothstep(0.75+blur, 0.75-blur, f.x) - smoothstep(0.25-blur, 0.25+blur, f.y) * smoothstep(0.75+blur, 0.75-blur, f.y)) * 0.5 + 0.5;
+
+    //stones, kinda
+    st.y += t*(mod(id, 2)*2. - 1.);
+    f = fract(st) - 0.5;
+    color.rgb += smoothstep(0.4, 0.35, length(f));
+
+
+
+    //grid
+//    color.rgb = drawAxis(uv, color.rgb);
+
+    //dist mask
+//    color.rgb = vec3(dist*.5+.5, 0.);
 
     gl_FragColor = color;
 }
